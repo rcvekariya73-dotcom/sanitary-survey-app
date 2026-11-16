@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#174a45">
+<title>Sanitary Inspector — Field Survey V12 Login Protected</title>
+<style>
+:root{--ink:#173b38;--accent:#176b60;--bg:#f3f7f5;--line:#d6e2de}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:#20312e;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:var(--ink);color:white;padding:20px 16px}header h1{font-size:1.2rem;margin:0 0 4px}header p{margin:0;font-size:.9rem;opacity:.9}
+main{max-width:900px;margin:auto;padding:14px}
+.card{background:white;border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px;box-shadow:0 2px 8px #183b3810}
+h2{font-size:1.05rem;color:var(--ink);margin:0 0 12px}h3{font-size:.95rem;margin:18px 0 8px;color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+label{display:block;font-size:.88rem;font-weight:600;margin:0 0 5px}
+input,select,textarea{width:100%;border:1px solid #bdcdc7;border-radius:8px;padding:10px;font:inherit;background:white;color:#20312e;min-height:42px}
+textarea{min-height:76px;resize:vertical}.wide{grid-column:1/-1}
+table{width:100%;border-collapse:collapse;min-width:760px}th,td{border:1px solid var(--line);padding:7px;text-align:left;vertical-align:top}th{background:#edf5f2;font-size:.8rem}td input,td select{min-width:75px;padding:7px}.vaccine-entry{display:grid;gap:7px;min-width:180px}.vaccine-entry select{width:100%}.vaccine-input input{width:100%}.radio-group{display:flex;gap:14px}.radio-group label{display:flex;align-items:center;gap:5px;font-weight:500}.radio-group input{width:auto;min-height:auto}
+.tablewrap{overflow-x:auto}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}.row label{font-weight:500}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+button{border:0;border-radius:9px;padding:11px 15px;background:var(--accent);color:white;font-weight:650;font-size:.92rem}
+button.secondary{background:#e7efec;color:var(--ink)}button.danger{background:#8c3434}
+.note{font-size:.82rem;color:#52645f;background:#f0f5f3;border-radius:8px;padding:10px}
+.status{font-size:.85rem;color:var(--accent);min-height:1.3em}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:10px}
+.photo-item{border:1px solid var(--line);border-radius:10px;padding:7px;overflow:hidden}
+.photo-item img{width:100%;height:110px;object-fit:cover;border-radius:6px}
+.photo-item button{margin-top:6px;padding:7px 9px;font-size:.8rem}
+.death-record{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0}
+.death-record h3{margin:0 0 10px}
+@media(max-width:520px){main{padding:9px}.card{padding:13px}.row{grid-template-columns:1fr}}
+
+.print-cover{display:none}
+@page{size:A4 landscape;margin:12mm}
+@media print{
+  :root{--ink:#173b38;--accent:#176b60;--line:#cbd8d3}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{background:#fff!important;color:#1d302d;font:10pt/1.35 Arial,sans-serif}
+  header{background:#173b38!important;color:#fff!important;padding:10px 14px;margin:0 0 9px;border-radius:0 0 8px 8px}
+  header h1{font-size:15pt;margin:0 0 3px}
+  header p{font-size:8.5pt}
+  header label,header select{display:none!important}
+  main{max-width:none;padding:0}
+  .print-cover{display:block;border:1.5px solid #176b60;border-radius:10px;padding:13px 16px;margin:0 0 12px;background:#f1f7f4}
+  .print-kicker{font-size:8pt;letter-spacing:2px;font-weight:700;color:#176b60}
+  .print-cover h1{font-size:19pt;line-height:1.15;margin:4px 0;color:#173b38}
+  .print-cover h2{font-size:12pt;margin:0 0 10px;color:#176b60}
+  .print-meta{display:flex;gap:35px;font-size:9pt;padding-top:8px;border-top:1px solid #cbd8d3}
+  .print-meta i{font-style:normal;min-width:100px;display:inline-block}
+  .card{border:1px solid #cbd8d3;border-radius:7px;padding:10px 11px;margin:0 0 9px;box-shadow:none!important;background:#fff;break-inside:avoid}
+  h2{font-size:11pt;color:#173b38;border-bottom:1.5px solid #176b60;padding-bottom:5px;margin:0 0 8px}
+  h3{font-size:9.5pt;color:#176b60;margin:10px 0 5px}
+  label{font-size:8pt;margin-bottom:2px}
+  input,select,textarea{font:8pt Arial,sans-serif;min-height:18px;padding:2px 4px;border:0;border-bottom:1px solid #9eada8;border-radius:0;background:transparent;color:#172b28}
+  textarea{min-height:28px}
+  .grid{gap:7px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tablewrap{overflow:visible}
+  table{width:100%;min-width:0;border-collapse:collapse;table-layout:auto;font-size:7.2pt}
+  th,td{border:1px solid #b9c9c3;padding:4px 5px;vertical-align:middle;overflow-wrap:anywhere}
+  th{background:#e7f1ed!important;color:#173b38;font-size:7pt}
+  td input,td select{width:100%;min-width:0;font-size:7pt;padding:1px}
+  .row{gap:5px;padding:4px 0}
+  .actions,.status,.note,#formManager,.photo-item button{display:none!important}
+  .photo-grid{grid-template-columns:repeat(4,1fr);gap:6px}
+  .photo-item{border:1px solid #cbd8d3;padding:4px;break-inside:avoid}
+  .photo-item img{height:95px;object-fit:contain}
+  .death-record{border:1px solid #cbd8d3;padding:8px;margin:6px 0;break-inside:avoid}
+  .radio-group{gap:10px}
+  .radio-group input{display:inline-block}
+  button{display:none!important}
+  #surveyContent{display:block!important}
+  .card:nth-of-type(1){break-before:auto}
+  .card:last-child{margin-bottom:0}
+}
+
+#v8WhatsAppCard input,#v8WhatsAppCard select{max-width:100%}
+@media print{#v8WhatsAppCard,#recordEntry,.v7-modal,.v6-dashboard,.actions button{display:none!important}}
+</style>
+
+<style id="v6Styles">
+:root{--ink:#17463e;--accent:#19836d;--bg:#f2f8f5;--line:#d5e6de}
+body{background:var(--bg)}
+button{cursor:pointer;min-height:42px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #83cbb5;outline-offset:2px}
+.v6-dashboard{border-top:4px solid var(--accent)}
+.v6-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.v6-head h2{margin:2px 0 12px}.v6-kicker{font-size:.72rem;letter-spacing:1.5px;color:var(--accent);font-weight:800}
+.v6-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:12px 0}
+.v6-stat{background:#f0f8f4;border:1px solid #d8e9e0;border-radius:12px;padding:13px}
+.v6-stat b{display:block;font-size:1.55rem;color:var(--ink)}.v6-stat span{font-size:.8rem;color:#52645f}
+.v6-tools{display:grid;grid-template-columns:minmax(180px,1fr) 170px auto;gap:8px;margin:12px 0}
+.v6-results{display:grid;gap:8px}.v6-result{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}
+.v6-result p{margin:3px 0;font-size:.82rem;color:#52645f}.v6-result .actions{margin:0}
+.v6-badge{font-size:.72rem;font-weight:700;padding:4px 8px;border-radius:20px;background:#e4f5ec;color:#176b50}.v6-badge.incomplete{background:#fff2db;color:#8a5b00}
+.v6-progress{height:10px;border-radius:10px;background:#e4ece8;overflow:hidden;margin:8px 0}.v6-progress span{display:block;height:100%;width:0;background:#19836d;transition:width .2s}
+.v6-validation{border-left:4px solid var(--accent)}.v6-validation ul{margin:6px 0;padding-left:22px}
+@media(max-width:600px){.v6-tools{grid-template-columns:1fr}.v6-result{align-items:flex-start;flex-direction:column}.v6-result .actions{width:100%}.v6-result button{flex:1}.v6-head{align-items:flex-start}}
+@page{size:A4 portrait;margin:12mm}
+@media print{
+ @page{size:A4 portrait;margin:10mm}
+ body{background:#fff!important}
+ header{break-after:avoid}
+ .v6-dashboard,.v6-validation,#v6ExtraPhotos .note,#v6ExtraPhotos input,.v6-kicker{display:none!important}
+ #v6ExtraPhotos{display:block!important}
+ .card{break-inside:auto!important}
+ .tablewrap{overflow:visible!important}
+ table{min-width:0!important;width:100%!important;font-size:6.8pt!important}
+ th,td{padding:3px!important;overflow-wrap:anywhere}
+ .photo-grid{grid-template-columns:repeat(3,1fr)!important}
+ .photo-item img{height:105px!important;object-fit:contain!important}
+ .photo-item{break-inside:avoid}
+ .print-cover{break-after:avoid}
+}
+</style>
+
+<style id="v7Styles">
+.v7-modal{position:fixed;inset:0;z-index:9999;background:#0d2824c9;display:flex;align-items:center;justify-content:center;padding:14px;overflow:auto}
+.v7-modal[hidden]{display:none!important}.v7-dialog{width:min(560px,100%);max-height:94vh;overflow:auto;background:#f5faf7;border-radius:18px;padding:20px;box-shadow:0 18px 60px #0005}.v7-records-dialog{width:min(980px,100%)}
+.pattern-grid{width:min(300px,85vw);aspect-ratio:1;margin:18px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:18px;border-radius:18px;background:#e4f0e9;touch-action:none}
+.pattern-grid button{width:100%;aspect-ratio:1;border-radius:50%;min-height:0;padding:0;border:5px solid #7a9d8d;background:#fff;box-shadow:inset 0 0 0 5px #fff;touch-action:none}
+.pattern-grid button.selected{background:#19836d;border-color:#145849;box-shadow:0 0 0 5px #a8ddc6}
+#recordEntry{text-align:center;border:2px dashed #8cb8a5}.record-entry button{min-width:170px;font-size:1.05rem}
+@media print{#recordEntry,.v7-modal{display:none!important}}
+</style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+
+</head>
+<body>
+
+<style id="loginGateStyles">
+#loginGate{max-width:480px;margin:28px auto;padding:22px;background:#fff;border:1px solid #b8d8c8;border-radius:18px;box-shadow:0 8px 28px #173b3812;font-family:system-ui,sans-serif}
+#loginGate h2{margin:0 0 8px;color:#173b38}#loginGate p{color:#52645f;font-size:14px}
+#loginGate label{display:block;font-weight:650;margin:12px 0 5px}#loginGate input,#loginGate select{width:100%;padding:12px;border:1px solid #bdcdc7;border-radius:9px;font:inherit;min-height:44px;box-sizing:border-box}
+#loginGate button{margin-top:14px;width:100%;padding:12px;border:0;border-radius:9px;background:#176b60;color:#fff;font-weight:700;font-size:16px}
+#loginGateStatus{min-height:24px;margin-top:10px;color:#176b60;font-weight:600}
+body:not(.student-logged-in)>header,body:not(.student-logged-in)>main{display:none!important}
+#studentLogout{float:right;margin:8px 12px;background:#e7efec;color:#173b38;border:0;border-radius:8px;padding:8px 12px;font-weight:700}
+@media print{#loginGate,#studentLogout{display:none!important}}
+</style>
+<section id="loginGate">
+ <h2>Student Login / विद्यार्थी लॉगिन</h2>
+ <p>Survey form खोलने के लिए पहले Student ID चुनें और password बनाएं या login करें.</p>
+ <label for="gateStudentId">Student ID</label>
+ <select id="gateStudentId"><option value="007">007 — Jay</option><option value="008">008 — Stavan</option></select>
+ <div id="gateExisting"><label for="gatePassword">Password</label><input id="gatePassword" type="password" autocomplete="current-password" placeholder="Enter password"></div>
+ <div id="gateNew" hidden>
+  <label for="gateNewPassword">Create password (minimum 6 characters)</label><input id="gateNewPassword" type="password" autocomplete="new-password" placeholder="Create password">
+  <label for="gateConfirmPassword">Confirm password</label><input id="gateConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirm password">
+ </div>
+ <button type="button" id="gateLoginButton">Login</button>
+ <button type="button" id="gateForgotButton" style="background:#eef5f2;color:#176b60;border:1px solid #b8d8c8;margin-top:8px">Forgot Password?</button>
+ <div id="loginGateStatus" role="status" aria-live="polite"></div>
+ <p class="note">First time on this phone? Create a password. Each student sets their own password on their own phone. Passwords are stored locally in this browser; clearing browser data resets the login.</p>
+</section>
+<script id="workingStudentLogin">
+(()=>{
+ const $=id=>document.getElementById(id), KEY='sanitary_survey_student_auth_v2', PROFILE='sanitary_survey_student_profile_v1';
+ const names={'007':'Jay','008':'Stavan'};
+ const getAuth=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}};
+ // Compatibility fallback keeps the local app usable in browsers that block Web Crypto on local HTML files.
+ const hash=(s)=>{let h1=0x811c9dc5;for(let i=0;i<s.length;i++){h1^=s.charCodeAt(i);h1=Math.imul(h1,0x01000193)}return (h1>>>0).toString(16).padStart(8,'0')};
+ function update(){const exists=!!getAuth()[$('gateStudentId').value];$('gateExisting').hidden=!exists;$('gateNew').hidden=exists;$('gateLoginButton').textContent=exists?'Login':'Create Password';$('gateForgotButton').hidden=!exists;$('loginGateStatus').textContent=exists?'Enter your password to continue.':'First-time setup: create a password for '+names[$('gateStudentId').value]+'.';$('gatePassword').value='';$('gateNewPassword').value='';$('gateConfirmPassword').value='';}
+ $('gateForgotButton').addEventListener('click',()=>{const id=$('gateStudentId').value;if(!getAuth()[id]){update();return;}if(!confirm('Forgot password for '+names[id]+'? This will reset only this student login password on this phone. Survey records and Google Sheets data will NOT be deleted.'))return;const auth=getAuth();delete auth[id];try{localStorage.setItem(KEY,JSON.stringify(auth));update();$('loginGateStatus').textContent='Password reset. Create a new password below.';}catch(e){$('loginGateStatus').textContent='Could not reset password: '+e.message;}});
+ function enter(id){localStorage.setItem(PROFILE,JSON.stringify({id,name:names[id],loggedInAt:Date.now()}));document.body.classList.add('student-logged-in');$('loginGate').hidden=true;let b=document.getElementById('studentLogout');if(!b){b=document.createElement('button');b.id='studentLogout';b.type='button';b.textContent='Logout ('+id+')';document.querySelector('header').prepend(b);b.onclick=()=>{localStorage.removeItem(PROFILE);document.body.classList.remove('student-logged-in');$('loginGate').hidden=false;update();window.scrollTo(0,0)};}else b.textContent='Logout ('+id+')';}
+ $('gateStudentId').addEventListener('change',update);
+ $('gateLoginButton').addEventListener('click',()=>{const id=$('gateStudentId').value,auth=getAuth();if(auth[id]){const p=$('gatePassword').value;if(!p){$('loginGateStatus').textContent='Please enter your password.';return;}if(hash(p+'|'+auth[id].salt)!==auth[id].hash){$('loginGateStatus').textContent='Incorrect password. Try again.';return;}enter(id);return;}
+ const p=$('gateNewPassword').value,c=$('gateConfirmPassword').value;if(p.length<6){$('loginGateStatus').textContent='Password must be at least 6 characters.';return;}if(p!==c){$('loginGateStatus').textContent='Passwords do not match.';return;}const salt=Math.random().toString(36).slice(2)+Date.now().toString(36);auth[id]={salt,hash:hash(p+'|'+salt),createdAt:Date.now()};try{localStorage.setItem(KEY,JSON.stringify(auth));$('loginGateStatus').textContent='Password created. Opening app…';enter(id);}catch(e){$('loginGateStatus').textContent='Browser storage is blocked. Open in Chrome and allow site storage.';}
+ });
+ // Require login on every app open; do not trust a remembered logged-in flag.
+ update();
+})();
+</script>
+
+<header><h1>Diploma in Sanitary Inspectors — Field Survey</h1>
+<p>Digital transcription of supplied book pages 159–161</p>
+<div style="margin-top:12px;max-width:260px">
+<label for="languageSelect" style="color:white">Form Language / फॉर्म भाषा / ફોર્મ ભાષા</label>
+<select id="languageSelect" aria-label="Select form language">
+<option value="en">English</option><option value="hi">हिन्दी</option><option value="gu">ગુજરાતી</option>
+</select></div></header>
+
+<style id="studentSetupStyles">
+#studentSetup{max-width:900px;margin:18px auto;padding:18px;background:#f3faf6;border:1px solid #b8d8c8;border-radius:16px;color:#173b31}
+#studentSetup h2{margin:0 0 8px}#studentSetup .student-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+#studentSetup label{display:block;font-weight:600;margin:8px 0 4px}#studentSetup input{width:100%;box-sizing:border-box;padding:11px;border:1px solid #9bb9aa;border-radius:8px;background:white;color:#173b31}
+#studentSetup .student-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}#studentSetup .student-note{font-size:.9rem;color:#49675a}
+#studentSetupStatus{font-weight:600;margin-top:8px}
+</style>
+<section id="studentSetup" aria-label="Student offline setup">
+ <h2>Student Setup / विद्यार्थी पंजीकरण</h2>
+ <p class="student-note">One-time setup on this mobile. Jay (007) and Stavan (008) will use the same Google Sheet; each survey record will carry the selected Student ID.</p>
+ <div id="studentProfileSummary" hidden></div>
+ <div id="studentProfileForm" class="student-grid">
+  <div><label for="studentId">Select Student *</label><select id="studentId"><option value="">Select your name</option><option value="007">007 — Jay</option><option value="008">008 — Stavan</option></select></div>
+  <div><label for="studentName">Student Name</label><input id="studentName" autocomplete="name" readonly placeholder="Select Student ID"></div>
+  <div><label for="studentMobile">Mobile Number *</label><input id="studentMobile" type="tel" inputmode="numeric" maxlength="15" autocomplete="tel" placeholder="Enter mobile number"></div>
+  <div><label for="studentEmail">Email ID *</label><input id="studentEmail" type="email" autocomplete="email" placeholder="Enter email address"></div>
+ </div>
+ <div class="student-actions"><button type="button" id="saveStudentProfile">Save Student Details</button><button type="button" class="secondary" id="editStudentProfile" hidden>Edit Details</button></div>
+ <div id="studentSetupStatus" role="status"></div>
+ <p class="student-note">Note: This is an offline student profile, not a password/OTP login. Use one student's own copy of this app on their own mobile. Do not share this device profile with another student.</p>
+</section>
+<script id="studentOfflineSetup">
+(()=>{
+ 'use strict';
+ const KEY='sanitary_survey_student_profile_v1';
+ const $=id=>document.getElementById(id);
+ const main=document.querySelector('main');
+ const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}};
+ let profile=read();
+ // Require the fixed two-student ID selection if an older auto-generated profile exists.
+ if(profile && !['007','008'].includes(profile.id)){const old=profile;profile=null;$('studentMobile').value=old.mobile||'';$('studentEmail').value=old.email||'';localStorage.removeItem(KEY);}
+ if(profile){$('studentId').value=profile.id;$('studentName').value=profile.name;}
+ function show(){
+  if(profile){$('studentProfileForm').hidden=true;$('saveStudentProfile').hidden=true;$('editStudentProfile').hidden=false;
+   $('studentProfileSummary').hidden=false;$('studentProfileSummary').innerHTML='';
+   const h=document.createElement('p');h.innerHTML='<strong>Active student:</strong> ';
+   h.append(document.createTextNode(profile.name+' · ID: '+profile.id));$('studentProfileSummary').append(h);
+   $('studentSetupStatus').textContent='Student profile saved on this device.';
+   if(main)main.hidden=false;
+  }else{ $('studentProfileForm').hidden=false;$('saveStudentProfile').hidden=false;$('editStudentProfile').hidden=true;$('studentProfileSummary').hidden=true;$('studentSetupStatus').textContent='Enter your details to start the field survey.';if(main)main.hidden=true; }
+ }
+ $('saveStudentProfile').addEventListener('click',()=>{
+  const id=$('studentId').value,name=$('studentName').value.trim(),mobile=$('studentMobile').value.replace(/\D/g,''),email=$('studentEmail').value.trim();
+  if(!['007','008'].includes(id)||name.length<2){$('studentSetupStatus').textContent='Please select Jay (007) or Stavan (008).';return;}
+  if(mobile.length<10||mobile.length>15){$('studentSetupStatus').textContent='Please enter a valid mobile number.';return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$('studentSetupStatus').textContent='Please enter a valid email address.';return;}
+  profile={id,name,mobile,email,createdAt:Date.now()};
+  localStorage.setItem(KEY,JSON.stringify(profile));show();
+ });
+ $('editStudentProfile').addEventListener('click',()=>{
+  $('studentId').value=profile.id;$('studentName').value=profile.name;$('studentMobile').value=profile.mobile;$('studentEmail').value=profile.email;
+  $('studentProfileForm').hidden=false;$('saveStudentProfile').hidden=false;$('editStudentProfile').hidden=true;$('studentProfileSummary').hidden=true;$('studentSetupStatus').textContent='Update your details and save.';
+ });
+ // Attach the active student identity to each survey record before local save / Sheet sync.
+ $('studentId').addEventListener('change',()=>{$('studentName').value=$('studentId').value==='007'?'Jay':$('studentId').value==='008'?'Stavan':'';});
+ const originalAllData=window.allData;
+ if(typeof originalAllData==='function')window.allData=function(){const d=originalAllData();if(profile)d._student_profile={student_id:profile.id,name:profile.name,mobile:profile.mobile,email:profile.email};return d;};
+ show();
+})();
+</script>
+
+<main>
+<div class="print-cover">
+  <div class="print-kicker">FIELD WORK RECORD</div>
+  <h1>Diploma in Sanitary Inspectors</h1>
+  <h2>Family Health &amp; Sanitation Survey</h2>
+  <div class="print-meta">
+    <span><b>Family No.:</b> <i data-print-family>________________</i></span>
+    <span><b>Survey Date:</b> <i data-print-date>________________</i></span>
+  </div>
+</div>
+
+<div class="card" id="formManager">
+  <h2>Survey Forms</h2>
+  <div class="actions">
+    <button type="button" onclick="createNewForm()">＋ Add New Form</button>
+    <button type="button" class="secondary" onclick="showPreviousForms()">Previous Forms</button>
+    <button type="button" class="secondary" onclick="continueCurrentForm()">Continue Previous Form</button>
+    <button type="button" class="secondary" onclick="v6DuplicateCurrent()">Duplicate Existing Form</button>
+    <button type="button" class="danger" onclick="deleteCurrentForm()">Delete Current Form</button>
+  </div>
+  <div id="formList" hidden></div>
+
+<div class="v6-validation card" id="v6Validation" hidden>
+  <h2>Form completion &amp; validation</h2><div id="v6ProgressText"></div><div class="v6-progress"><span id="v6ProgressBar"></span></div><div id="v6Missing"></div>
+</div>
+
+  <p class="note">Each family's survey is saved separately on this device/browser. Select a saved form to continue or edit it.</p>
+</div>
+<div id="surveyContent" hidden>
+<div class="card">
+<h2>1. Family Information</h2>
+<div class="grid">
+<div><label>Family No.</label><input data-save="family_no"></div>
+<div><label>Date</label><input type="date" data-save="interview_date"></div>
+<div class="wide"><label>Name of Interviewer</label><input data-save="interviewer"></div>
+<div class="wide"><label>Full Name of the Head of Family</label><input data-save="head_name"></div>
+<div class="wide"><label>Complete Postal Address</label><textarea data-save="postal_address"></textarea></div>
+<div><label>Duration to Stay in the Area</label><input data-save="duration_stay"></div>
+<div><label>Mobile No. of Any Family Member</label><input type="tel" data-save="family_mobile"></div>
+<div><label>Family Date</label><input data-save="family_date"></div>
+<div><label>Religion</label><input data-save="religion"></div>
+</div>
+<h3>Family Details</h3>
+<div class="tablewrap"><table><thead><tr><th>Sr. No.</th><th>Name</th><th>Head / Relationship</th><th>Age</th><th>Sex</th><th>Marital Status</th><th>Education (No. of Yrs.)</th><th>Occupation Nature</th><th>Monthly Income (Rs.)</th></tr></thead><tbody id="familyRows"></tbody></table></div>
+</div>
+
+<div class="card">
+<h2>3. Immunization status of Child / Children under 6 Years of Age</h2>
+<p class="note">Add one child record for each child under 6 years. The printed page shows vaccine-date columns; this form records the same vaccine fields for each child.</p>
+<div id="children"></div>
+<button type="button" class="secondary" onclick="addChild()">+ Add child</button>
+</div>
+
+<div class="card">
+<h2>4. History of present pregnancy</h2>
+<div class="grid">
+<div><label>A. Duration of pregnancy at the time of interview (wks.)</label><input data-save="preg_duration"></div>
+<div><label>B. Registered at Antenatal Clinic: Yes/No</label><select data-save="antenatal_registered"><option value=""></option><option>Yes</option><option>No</option></select></div>
+<div class="wide"><label>If yes specify the place</label><input data-save="antenatal_place"></div>
+</div>
+<h3>C. H/o. Antenatal Injection T.T. Given</h3>
+<div class="grid">
+<div><label>1st Dose T.T. on — Date</label><input type="date" data-save="tt1_date"></div>
+<div><label>2nd Dose T.T. on — Date</label><input type="date" data-save="tt2_date"></div>
+<div><label>OR — Booster T.T. on — Date</label><input type="date" data-save="tt_booster_date"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>5. Family Planning History</h2>
+<div class="grid">
+<div><label>A. Has husband been sterilized — Yes/No</label><select data-save="husband_sterilized"><option value=""></option><option>Yes</option><option>No</option></select></div>
+<div><label>B. Has wife been sterilized — Yes/No</label><select data-save="wife_sterilized"><option value=""></option><option>Yes</option><option>No</option></select></div>
+<div><label>C. Practice of contraception — Yes/No</label><select data-save="contraception_practice"><option value=""></option><option>Yes</option><option>No</option></select></div>
+<div class="wide"><label>If yes, specify the method used</label><input data-save="contraception_method"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>6. History of morbidity in the family since last 6 months from date of visit.</h2>
+<div class="tablewrap"><table><thead><tr><th>Sr. No.</th><th>Complaints</th><th>Name of Patient</th><th>1st Date of Visit &amp; Signature of any Adult Family Member</th><th>2nd Date of Visit &amp; Signature of any Adult Family Member</th><th>3rd Date of Visit &amp; Signature of any Adult Family Member</th><th>4th Date of Visit &amp; Signature of any Adult Family Member</th></tr></thead><tbody id="morbidityRows"></tbody></table></div>
+</div>
+
+<div class="card">
+<h2>7. History of mortality in the family</h2>
+<div class="grid">
+<div class="wide">
+<label>Has any member of the family died during last five years — Yes/No</label>
+<div class="radio-group">
+<label><input type="radio" name="death_last_5_years" value="Yes" data-save="death_last_5_years"> Yes</label>
+<label><input type="radio" name="death_last_5_years" value="No" data-save="death_last_5_years"> No</label>
+</div>
+</div>
+</div>
+<div id="deathDetails" hidden>
+<p class="note">If Yes, enter details of each deceased family member.</p>
+<div id="deathRecords"></div>
+<button type="button" class="secondary" onclick="addDeathRecord()">+ Add another death</button>
+</div>
+</div>
+
+<div class="card">
+<h2>8. Xerox copy of current or last month’s bill attached</h2>
+<p>Electric bill / Rent bill / Mobile bill / Telephone bill or other:</p>
+<div class="grid">
+<div><label>Bill type</label><select data-save="bill_attached" id="billType"><option value=""></option><option>Electric bill</option><option>Rent bill</option><option>Mobile bill</option><option>Telephone bill</option><option>Other</option></select></div>
+<div id="billOtherWrap" hidden><label>If other, specify</label><input data-save="bill_other"></div>
+<div class="wide">
+<label>Attach bill photo / image (you can choose a photo or open camera)</label>
+<input id="billPhotos" type="file" accept="image/*" capture="environment" multiple>
+<p class="note">On a phone, the camera option may appear in the file picker. You can also choose an existing image. Photos are saved on this device with this survey.</p>
+<div id="billPhotoPreview" class="photo-grid"></div>
+</div>
+</div>
+</div>
+
+
+<div class="card" id="v6ExtraPhotos">
+  <h2>Additional Survey Photographs</h2>
+  <label for="v6ExtraPhotoInput">Attach multiple photographs (camera or gallery)</label>
+  <input id="v6ExtraPhotoInput" type="file" accept="image/*" capture="environment" multiple>
+  <p class="note">Images are resized and compressed before saving to reduce device storage use.</p>
+  <div id="v6ExtraPhotoPreview" class="photo-grid"></div>
+</div>
+
+<div class="card">
+<h2>Save and export</h2>
+<p class="note">This form saves on this device/browser only. It does not send data to a server. Survey details may include sensitive family and health information: protect your phone and exported files.</p>
+<div class="actions">
+<button type="button" onclick="saveNow()">Save on this device</button>
+<button type="button" class="secondary" onclick="exportJSON()">Export filled form (JSON)</button>
+<button type="button" class="secondary" onclick="window.print()">Print / Save as PDF</button>
+<button type="button" class="danger" onclick="clearForm()">Clear this form</button>
+</div><div class="status" id="status" aria-live="polite"></div>
+</div>
+<div class="card" id="v8WhatsAppCard">
+ <h2>WhatsApp PDF Sharing</h2>
+ <p class="note">Enter the recipient's WhatsApp number. Generate/print the family report as PDF, then open WhatsApp to attach and send it. This offline HTML cannot silently attach or send a PDF by itself.</p>
+ <div class="grid"><div><label for="v8Country">Country code</label><select id="v8Country"><option value="91">India (+91)</option><option value="1">USA/Canada (+1)</option><option value="44">UK (+44)</option><option value="971">UAE (+971)</option></select></div><div><label for="v8WhatsAppNumber">WhatsApp number</label><input id="v8WhatsAppNumber" type="tel" inputmode="numeric" placeholder="10-digit mobile number"></div></div>
+ <div class="actions"><button type="button" onclick="v8SaveWhatsApp()">Save number</button><button type="button" class="secondary" onclick="v8GenerateReport()">Generate / Print PDF</button><button type="button" onclick="v8OpenWhatsApp()">Open WhatsApp</button></div><p class="status" id="v8WhatsAppStatus" aria-live="polite"></p>
+ </div>
+</div><!-- surveyContent -->
+<div class="card record-entry" id="recordEntry">
+  <h2>Records</h2>
+  <p class="note">Saved survey records and dashboard are protected by your one-time pattern lock.</p>
+  <button type="button" id="openRecordsBtn" onclick="v7OpenRecords()">🔒 Record</button>
+</div>
+<div class="v7-modal" id="patternModal" hidden role="dialog" aria-modal="true" aria-labelledby="patternTitle">
+ <div class="v7-dialog">
+  <h2 id="patternTitle">Set your pattern lock</h2>
+  <p id="patternHelp">Connect at least 4 dots. You will set this pattern only once.</p>
+  <div class="pattern-grid" id="patternGrid" aria-label="3 by 3 pattern lock">
+   <button type="button" data-dot="0" aria-label="Dot 1"></button><button type="button" data-dot="1" aria-label="Dot 2"></button><button type="button" data-dot="2" aria-label="Dot 3"></button>
+   <button type="button" data-dot="3" aria-label="Dot 4"></button><button type="button" data-dot="4" aria-label="Dot 5"></button><button type="button" data-dot="5" aria-label="Dot 6"></button>
+   <button type="button" data-dot="6" aria-label="Dot 7"></button><button type="button" data-dot="7" aria-label="Dot 8"></button><button type="button" data-dot="8" aria-label="Dot 9"></button>
+  </div>
+  <p class="status" id="patternStatus" aria-live="polite">Choose a pattern.</p>
+  <div id="v8RecoveryBox" hidden class="note"><strong>One-time recovery code — write it down and keep it private:</strong><p id="v8RecoveryCode" style="font-size:1.3rem;font-weight:800;letter-spacing:2px"></p><label><input type="checkbox" id="v8RecoverySaved" style="width:auto;min-height:auto"> I have saved this recovery code safely.</label></div>
+  <div class="grid"><div><label for="v8RecoveryInput">Forgot pattern? Recovery code</label><input id="v8RecoveryInput" autocomplete="off" placeholder="Enter recovery code"></div><div style="align-self:end"><button type="button" class="secondary" onclick="v8RecoverRecords()">Unlock with recovery code</button></div></div>
+  <div class="actions"><button type="button" id="patternSubmit">Continue</button><button type="button" class="secondary" onclick="v7ClosePattern()">Cancel</button></div>
+ </div>
+</div>
+<div class="v7-modal" id="recordsModal" hidden role="dialog" aria-modal="true" aria-labelledby="recordsTitle">
+ <div class="v7-dialog v7-records-dialog">
+  <div class="v6-head"><h2 id="recordsTitle">Survey Records Dashboard</h2><button type="button" class="secondary" onclick="v7CloseRecords()">✕ Close</button></div>
+  <section class="v6-dashboard card" id="v6Dashboard">
+  <div class="v6-head"><div><span class="v6-kicker">FIELD SURVEY • V8</span><h2>Survey Dashboard</h2></div><button type="button" class="secondary" onclick="v6RefreshDashboard()">↻ Refresh</button></div>
+  <div class="v6-stats" id="v6Stats"></div>
+  <div class="v6-tools">
+    <input id="v6Search" type="search" placeholder="Search family number, family head or mobile number…" aria-label="Search saved forms">
+    <select id="v6CompletionFilter" aria-label="Filter forms"><option value="all">All forms</option><option value="complete">Completed</option><option value="incomplete">Incomplete</option></select>
+    <button type="button" onclick="v6RenderResults()">Search</button>
+  </div>
+  <div id="v6Results" class="v6-results"></div>
+  <div class="actions">
+    <button type="button" onclick="v6ExportCSVs()">Download Excel / CSV (7 files)</button>
+    <button type="button" class="secondary" onclick="v6Backup()">Download Full Backup (JSON)</button>
+    <button type="button" class="secondary" onclick="document.getElementById('v6RestoreFile').click()">Restore / Merge Backup</button>
+    <input id="v6RestoreFile" type="file" accept=".json,application/json" hidden>
+  </div>
+  <p class="note">All records stay on this device. CSV exports are UTF-8 with BOM for Gujarati and Hindi. Keep a JSON backup in a safe place.</p>
+</section>
+  <div class="card"><h3>Google Sheets connection</h3>
+   <label for="v7SheetUrl">Google Apps Script Web App URL</label>
+   <input id="v7SheetUrl" type="url" placeholder="Paste deployed Apps Script URL here">
+   <div class="actions"><button type="button" onclick="v7SaveSheetUrl()">Save connection</button><button type="button" class="secondary" onclick="v7SyncAll()">Sync all records to Google Sheet</button></div>
+   <p class="note" id="v7SheetStatus">Records remain on this device until you connect your own Google Sheet. Sync uses one tab named Survey_Records, one row per family record.</p>
+  </div>
+ </div>
+</div>
+</main>
+<script>
+const familyBody=document.getElementById('familyRows');
+for(let i=1;i<=10;i++){const tr=document.createElement('tr');tr.innerHTML=`<td>${i}</td>${['Name','Head / Relationship','Age','Sex','Marital Status','Education (No. of Yrs.)','Occupation Nature','Monthly Income (Rs.)'].map((x,j)=>`<td><input aria-label="Family member ${i} ${x}" data-save="family_${i}_${j}"></td>`).join('')}`;familyBody.appendChild(tr);}
+const morbidity=['Chicken pox','Measles','Mumps','Cough with expectoration','Tuberculosis','Malaria',"Fever with chill's",'Diarrhea','Dysentry','Worms infestation [Name the worm]','Scabies','Ringworm','Louse infestation','Breathlessness','Joint pains','Leptospirosis','Swine flu','Chickengunya','Hepatitis B','Hepatitis A','Heart Problems - Specify','Kidney problems - Specify','Hypertension','Diabetes','Cancer','Any other major disease. (Specify)','Any other information'];
+const morbidityBody=document.getElementById('morbidityRows');
+morbidity.forEach((name,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${i+1}</td><td>${name}</td><td><input data-save="morb_${i}_patient" aria-label="${name} patient name"></td>${[1,2,3,4].map(n=>`<td><input data-save="morb_${i}_visit${n}" aria-label="${name} visit ${n} date and signature"></td>`).join('')}`;morbidityBody.appendChild(tr);});
+let childCount=0;
+function vaccineEntry(i){return `<div class="vaccine-entry">
+<select data-vaccine-kind="${i}" aria-label="Select entry type" onchange="showVaccineInput(this)">
+<option value="">Choose entry type</option><option value="date">Date</option><option value="month">Month</option><option value="yesno">Yes / No</option>
+</select>
+<div data-vaccine-input="${i}" class="vaccine-input"></div></div>`;}
+function showVaccineInput(sel){
+ const i=sel.dataset.vaccineKind, box=sel.parentElement.querySelector('[data-vaccine-input]');
+ if(sel.value==='date') box.innerHTML=`<input type="date" data-vaccine-value="${i}" aria-label="Select vaccine date">`;
+ else if(sel.value==='month') box.innerHTML=`<input type="month" data-vaccine-value="${i}" aria-label="Select approximate vaccine month">`;
+ else if(sel.value==='yesno') box.innerHTML=`<div class="radio-group"><label><input type="radio" name="vaccine_${sel.closest('[data-child]').dataset.child}_${i}" value="Yes" data-vaccine-value="${i}"> Yes</label><label><input type="radio" name="vaccine_${sel.closest('[data-child]').dataset.child}_${i}" value="No" data-vaccine-value="${i}"> No</label></div>`;
+ else box.innerHTML='';
+}
+const vaccineFields=['B.C.G. Vaccine','O.P.V. (Zero Dose)','Hepatitis - B Vaccine - (Zero Dose)','DPT / OPV / Hepatitis B - 1st Dose','DPT / OPV / Hepatitis B - 2nd Dose','DPT / OPV / Hepatitis B - 3rd Dose','Measles Vaccine / M.M.R. Vaccine','H/O, Measles Disease'];
+function addChild(data={}){childCount++;const id=childCount;const box=document.createElement('div');box.className='card';box.style.background='#f8fbfa';box.dataset.child=id;
+box.innerHTML=`<h3>Child ${id}</h3><div class="grid">
+<div><label>1. Name of child</label><input data-child="name"></div>
+<div><label>2. Age in Years &amp; Months</label><input data-child="age"></div>
+<div><label>3. Delivery - At Home / Write Name of Hospital [or Tick]</label><input data-child="delivery"></div>
+<div><label>4. Birth Weight [If Known]</label><input data-child="birth_weight"></div>
+</div><p class="note">5. Vaccine data - If vaccination card is available, then mention the dates, otherwise ask the family / mother and write approximate month or write - Yes / No.</p>
+<div class="tablewrap"><table><thead><tr><th>Vaccine</th><th>Date of Vaccine / approximate month / Yes-No</th></tr></thead><tbody>${vaccineFields.map((v,i)=>`<tr><td>${v}</td><td>${vaccineEntry(i)}</td></tr>`).join('')}
+<tr><td>1st Booster of DPT / OPV</td><td>${vaccineEntry(8)}</td></tr>
+<tr><td>2nd Booster of DPT / OPV</td><td>${vaccineEntry(9)}</td></tr>
+<tr><td>Total Number of Vitamin ‘A’ Doses given since Birth</td><td><input type="number" min="0" step="1" data-vaccine-count="10" aria-label="Total Vitamin A doses"></td></tr>
+<tr><td>Total Number of OPV given in PPI since Birth</td><td><input type="number" min="0" step="1" data-vaccine-count="11" aria-label="Total OPV doses"></td></tr>
+<tr><td>Any other Vaccine given [Specify the Name of Vaccine]</td><td><input data-vaccine-text="12" aria-label="Other vaccine name"></td></tr></tbody></table></div>
+<button type="button" class="danger" onclick="this.parentElement.remove()">Remove this child</button>`;
+document.getElementById('children').appendChild(box);
+box.querySelectorAll('[data-child]').forEach(el=>el.value=data[el.dataset.child]||'');
+}
+addChild();
+
+let deathRecordCount=0;
+let billImages=[];
+function addDeathRecord(data={}){
+  deathRecordCount++;
+  const id=deathRecordCount;
+  const box=document.createElement('div');
+  box.className='death-record';
+  box.innerHTML=`<h3>Deceased person ${id}</h3>
+    <div class="grid">
+      <div><label>Name of deceased</label><input data-death="name" value="${escapeAttr(data.name||'')}"></div>
+      <div><label>A. Date of death</label><input type="date" data-death="date" value="${escapeAttr(data.date||'')}"></div>
+      <div><label>B. Relationship with family head</label><input data-death="relationship" value="${escapeAttr(data.relationship||'')}"></div>
+      <div><label>C. Age at the time of death</label><input type="number" min="0" data-death="age" value="${escapeAttr(data.age||'')}"></div>
+      <div class="wide"><label>D. Probable cause of death</label><input data-death="cause" value="${escapeAttr(data.cause||'')}"></div>
+    </div>
+    <button type="button" class="danger" onclick="this.closest('.death-record').remove();saveNow()">Remove this record</button>`;
+  document.getElementById('deathRecords').appendChild(box);
+}
+function escapeAttr(s){return String(s).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');}
+function updateDeathVisibility(){
+  const selected=document.querySelector('[name="death_last_5_years"]:checked');
+  const show=!!selected && selected.value==='Yes';
+  document.getElementById('deathDetails').hidden=!show;
+  if(show && !document.querySelector('#deathRecords .death-record')) addDeathRecord();
+  if(!show){document.getElementById('deathRecords').innerHTML='';deathRecordCount=0;}
+  saveNow();
+}
+document.querySelectorAll('[name="death_last_5_years"]').forEach(el=>el.addEventListener('change',updateDeathVisibility));
+document.getElementById('billType').addEventListener('change',()=>{
+  document.getElementById('billOtherWrap').hidden=document.getElementById('billType').value!=='Other';
+  saveNow();
+});
+function renderBillPhotos(){
+  const host=document.getElementById('billPhotoPreview'); host.innerHTML='';
+  billImages.forEach((item,index)=>{
+    const div=document.createElement('div'); div.className='photo-item';
+    const img=document.createElement('img'); img.src=item.data; img.alt=item.name||'Bill attachment';
+    const caption=document.createElement('div'); caption.textContent=item.name||`Photo ${index+1}`;
+    const remove=document.createElement('button'); remove.type='button'; remove.className='danger'; remove.textContent='Remove';
+    remove.onclick=()=>{billImages.splice(index,1);renderBillPhotos();saveNow();};
+    div.append(img,caption,remove);host.appendChild(div);
+  });
+}
+document.getElementById('billPhotos').addEventListener('change',async e=>{
+  const files=[...e.target.files];
+  for(const file of files){
+    if(!file.type.startsWith('image/')) continue;
+    const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);});
+    billImages.push({name:file.name,data});
+  }
+  renderBillPhotos(); saveNow(); e.target.value='';
+});
+
+function allData(){const out={};document.querySelectorAll('[data-save]').forEach(el=>out[el.dataset.save]=el.value);out.children=[...document.querySelectorAll('[data-child]')].reduce((a,el)=>{const box=el.closest('[data-child]');return a},[]);out.child_records=[...document.querySelectorAll('#children > .card')].map(box=>{const c={};box.querySelectorAll('[data-child]').forEach(el=>c[el.dataset.child]=el.value);c.vaccines={};box.querySelectorAll('[data-vaccine-kind]').forEach(sel=>{const i=sel.dataset.vaccineKind;const valueEl=box.querySelectorAll(`[data-vaccine-value="${i}"]`);let value='';if(valueEl.length){if(valueEl[0].type==='radio'){const checked=[...valueEl].find(x=>x.checked);value=checked?checked.value:'';}else value=valueEl[0].value;}c.vaccines[i]={type:sel.value,value};});box.querySelectorAll('[data-vaccine-count]').forEach(el=>c.vaccines[el.dataset.vaccineCount]={type:'count',value:el.value});box.querySelectorAll('[data-vaccine-text]').forEach(el=>c.vaccines[el.dataset.vaccineText]={type:'text',value:el.value});return c;});out.death_records=[...document.querySelectorAll('#deathRecords .death-record')].map(box=>{const r={};box.querySelectorAll('[data-death]').forEach(el=>r[el.dataset.death]=el.value);return r;});
+out.bill_images=billImages;
+return out;}
+function saveNow(){localStorage.setItem('sanitary_survey_draft',JSON.stringify(allData()));document.getElementById('status').textContent='Saved on this device.';}
+function exportJSON(){saveNow();const blob=new Blob([JSON.stringify(allData(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='field-survey-record.json';a.click();URL.revokeObjectURL(a.href);}
+function clearForm(){if(!confirm('Clear all entered information on this form?'))return;localStorage.removeItem('sanitary_survey_draft');document.querySelectorAll('input,textarea,select').forEach(el=>el.value='');document.getElementById('children').innerHTML='';childCount=0;addChild();document.getElementById('status').textContent='Form cleared.';}
+
+const FORMS_KEY='sanitary_survey_forms_v1';
+let activeFormId=null;
+function getForms(){try{return JSON.parse(localStorage.getItem(FORMS_KEY)||'[]')}catch(e){return []}}
+function putForms(forms){localStorage.setItem(FORMS_KEY,JSON.stringify(forms))}
+function formTitle(f){return f.title||f.data?.head_name||('Family '+(f.data?.family_no||'—'))}
+function refreshFormList(){
+ const host=document.getElementById('formList'); const forms=getForms();
+ host.innerHTML='';
+ if(!forms.length){host.innerHTML='<p class="note">No previous forms saved yet.</p>';return;}
+ forms.sort((a,b)=>(b.updated||0)-(a.updated||0));
+ forms.forEach(f=>{
+   const row=document.createElement('div');row.className='card';row.style.margin='8px 0';row.style.padding='12px';
+   const title=document.createElement('strong');title.textContent=formTitle(f);
+   const info=document.createElement('p');info.className='note';info.textContent='Family No: '+(f.data?.family_no||'—')+' | Updated: '+new Date(f.updated||Date.now()).toLocaleString();
+   const open=document.createElement('button');open.textContent='Open / Edit';open.onclick=()=>openForm(f.id);
+   row.append(title,info,open);host.appendChild(row);
+ });
+}
+function showPreviousForms(){const host=document.getElementById('formList');host.hidden=!host.hidden;if(!host.hidden)refreshFormList();}
+function saveNow(){
+ if(!activeFormId)return;
+ const forms=getForms();const data=allData();const idx=forms.findIndex(f=>f.id===activeFormId);
+ const item={id:activeFormId,data,updated:Date.now()};
+ if(idx>=0)forms[idx]=item;else forms.push(item);
+ putForms(forms);
+ const status=document.getElementById('status');if(status)status.textContent='Saved on this device.';
+ refreshFormListIfVisible();
+}
+function refreshFormListIfVisible(){const host=document.getElementById('formList');if(host&&!host.hidden)refreshFormList();}
+function resetSurveyUI(){
+ document.querySelectorAll('#surveyContent input, #surveyContent textarea, #surveyContent select').forEach(el=>{
+   if(el.type==='radio'||el.type==='checkbox')el.checked=false;else if(el.type!=='file')el.value='';
+ });
+ document.getElementById('children').innerHTML='';childCount=0;addChild();
+ document.getElementById('deathRecords').innerHTML='';deathRecordCount=0;
+ document.getElementById('deathDetails').hidden=true;
+ billImages=[];renderBillPhotos();
+ document.getElementById('billOtherWrap').hidden=true;
+}
+function restoreFormData(d){
+document.querySelectorAll('[data-save]').forEach(el=>el.value=d[el.dataset.save]||'');
+document.querySelectorAll('[name="death_last_5_years"]').forEach(el=>el.checked=el.value===(d.death_last_5_years||''));
+deathRecordCount=0;document.getElementById('deathRecords').innerHTML='';
+(d.death_records||[]).forEach(r=>addDeathRecord(r));
+document.getElementById('deathDetails').hidden=d.death_last_5_years!=='Yes';
+document.getElementById('billOtherWrap').hidden=d.bill_attached!=='Other';
+billImages=d.bill_images||[];renderBillPhotos();document.getElementById('children').innerHTML='';childCount=0;(d.child_records||[{}]).forEach(c=>{addChild(c);const box=document.querySelector('#children > .card:last-child');Object.entries(c.vaccines||{}).forEach(([i,item])=>{if(typeof item!=='object'||!item)return;if(item.type==='count'){const el=box.querySelector(`[data-vaccine-count="${i}"]`);if(el)el.value=item.value||'';}else if(item.type==='text'){const el=box.querySelector(`[data-vaccine-text="${i}"]`);if(el)el.value=item.value||'';}else{const sel=box.querySelector(`[data-vaccine-kind="${i}"]`);if(sel){sel.value=item.type||'';showVaccineInput(sel);const inputs=box.querySelectorAll(`[data-vaccine-value="${i}"]`);inputs.forEach(el=>{if(el.type==='radio')el.checked=el.value===item.value;else el.value=item.value||'';});}}});});document.getElementById('status').textContent='Previous saved draft restored.';
+}
+function createNewForm(){
+ saveNow();
+ activeFormId='form_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
+ resetSurveyUI();
+ document.getElementById('surveyContent').hidden=false;
+ document.getElementById('formList').hidden=true;
+ document.getElementById('status').textContent='New family survey. Fill the details; it will auto-save.';
+ saveNow();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function openForm(id){
+ saveNow();
+ const f=getForms().find(x=>x.id===id);if(!f)return;
+ activeFormId=id;resetSurveyUI();document.getElementById('surveyContent').hidden=false;
+ restoreFormData(f.data||{});
+ document.getElementById('formList').hidden=true;
+ const status=document.getElementById('status');if(status)status.textContent='Previous survey opened. Changes auto-save.';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function continueCurrentForm(){
+ if(activeFormId){document.getElementById('surveyContent').hidden=false;return;}
+ const forms=getForms().sort((a,b)=>(b.updated||0)-(a.updated||0));
+ if(forms.length)openForm(forms[0].id);else createNewForm();
+}
+function deleteCurrentForm(){
+ if(!activeFormId){alert('Open a saved form first.');return;}
+ if(!confirm('Delete this family survey permanently from this device?'))return;
+ putForms(getForms().filter(f=>f.id!==activeFormId));activeFormId=null;
+ resetSurveyUI();document.getElementById('surveyContent').hidden=true;
+ document.getElementById('status').textContent='Survey deleted.';
+ refreshFormList();
+}
+function clearForm(){if(!confirm('Clear all entered information in this survey?'))return;resetSurveyUI();saveNow();document.getElementById('status').textContent='Current survey cleared.';}
+function exportJSON(){saveNow();const item=getForms().find(f=>f.id===activeFormId);if(!item){alert('Open or create a survey first.');return;}const blob=new Blob([JSON.stringify(item.data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='field-survey-'+(item.data.family_no||'record')+'.json';a.click();URL.revokeObjectURL(a.href);}
+document.getElementById('surveyContent').hidden=true;refreshFormList();
+let timer;document.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(saveNow,900);});document.addEventListener('change',()=>{clearTimeout(timer);timer=setTimeout(saveNow,400);});
+</script>
+
+<script>
+/* Interface translations only. Stored field keys and exported data remain language-neutral. */
+const translations = {
+hi: {
+"Family Information":"परिवार की जानकारी","Family No.":"परिवार संख्या","Date":"तारीख","Name of Interviewer":"साक्षात्कारकर्ता का नाम",
+"Full Name of the Head of Family":"परिवार के मुखिया का पूरा नाम","Complete Postal Address":"पूरा डाक पता",
+"Duration to Stay in the Area":"इस क्षेत्र में रहने की अवधि","Mobile No. of Any Family Member":"परिवार के किसी सदस्य का मोबाइल नंबर",
+"Family Date":"परिवार की तारीख","Religion":"धर्म","Family Details":"परिवार का विवरण","Sr. No.":"क्रम संख्या","Name":"नाम",
+"Head / Relationship":"मुखिया / संबंध","Age":"आयु","Sex":"लिंग","Marital Status":"वैवाहिक स्थिति",
+"Education (No. of Yrs.)":"शिक्षा (वर्षों की संख्या)","Occupation Nature":"व्यवसाय का प्रकार","Monthly Income (Rs.)":"मासिक आय (रु.)",
+"Immunization status of Child / Children under 6 Years of Age":"6 वर्ष से कम आयु के बच्चे / बच्चों की टीकाकरण स्थिति",
+"Add one child record for each child under 6 years. The printed page shows vaccine-date columns; this form records the same vaccine fields for each child.":"6 वर्ष से कम आयु के प्रत्येक बच्चे के लिए अलग रिकॉर्ड जोड़ें। इस फॉर्म में पुस्तक के अनुसार टीके से संबंधित जानकारी दर्ज करें।",
+"Add child":"बच्चा जोड़ें","Child":"बच्चा","1. Name of child":"1. बच्चे का नाम","2. Age in Years & Months":"2. आयु (वर्ष और महीने)",
+"3. Delivery - At Home / Write Name of Hospital [or Tick]":"3. प्रसव - घर पर / अस्पताल का नाम लिखें [या टिक करें]",
+"4. Birth Weight [If Known]":"4. जन्म के समय वजन [यदि ज्ञात हो]",
+"5. Vaccine data - If vaccination card is available, then mention the dates, otherwise ask the family / mother and write approximate month or write - Yes / No.":"5. टीकाकरण की जानकारी - टीकाकरण कार्ड उपलब्ध हो तो तारीख लिखें; अन्यथा परिवार / माता से पूछकर अनुमानित महीना या हाँ / नहीं लिखें।",
+"B.C.G. Vaccine":"बी.सी.जी. टीका","O.P.V. (Zero Dose)":"ओ.पी.वी. (शून्य खुराक)",
+"Hepatitis - B Vaccine - (Zero Dose)":"हेपेटाइटिस-बी टीका (शून्य खुराक)",
+"DPT / OPV / Hepatitis B - 1st Dose":"डी.पी.टी. / ओ.पी.वी. / हेपेटाइटिस-बी - पहली खुराक",
+"DPT / OPV / Hepatitis B - 2nd Dose":"डी.पी.टी. / ओ.पी.वी. / हेपेटाइटिस-बी - दूसरी खुराक",
+"DPT / OPV / Hepatitis B - 3rd Dose":"डी.पी.टी. / ओ.पी.वी. / हेपेटाइटिस-बी - तीसरी खुराक",
+"Measles Vaccine / M.M.R. Vaccine":"खसरा टीका / एम.एम.आर. टीका","H/O, Measles Disease":"खसरा रोग का इतिहास",
+"1st Booster of DPT / OPV":"डी.पी.टी. / ओ.पी.वी. की पहली बूस्टर खुराक","2nd Booster of DPT / OPV":"डी.पी.टी. / ओ.पी.वी. की दूसरी बूस्टर खुराक",
+"Total Number of Vitamin ‘A’ Doses given since Birth":"जन्म से अब तक विटामिन ‘ए’ की कुल खुराक",
+"Total Number of OPV given in PPI since Birth":"जन्म से अब तक पी.पी.आई. में दी गई ओ.पी.वी. की कुल खुराक",
+"Any other Vaccine given [Specify the Name of Vaccine]":"कोई अन्य टीका दिया गया [टीके का नाम लिखें]",
+"History of present pregnancy":"वर्तमान गर्भावस्था का इतिहास",
+"A. Duration of pregnancy at the time of interview (wks.)":"A. साक्षात्कार के समय गर्भावस्था की अवधि (सप्ताह)",
+"B. Registered at Antenatal Clinic: Yes/No":"B. प्रसव-पूर्व क्लिनिक में पंजीकरण: हाँ/नहीं",
+"If yes specify the place":"यदि हाँ, तो स्थान बताएं","C. H/o. Antenatal Injection T.T. Given":"C. प्रसव-पूर्व टी.टी. इंजेक्शन का इतिहास",
+"1st Dose T.T. on — Date":"टी.टी. की पहली खुराक की तारीख","2nd Dose T.T. on — Date":"टी.टी. की दूसरी खुराक की तारीख",
+"OR — Booster T.T. on — Date":"या — टी.टी. बूस्टर की तारीख","Family Planning History":"परिवार नियोजन का इतिहास",
+"A. Has husband been sterilized — Yes/No":"A. क्या पति की नसबंदी हुई है — हाँ/नहीं",
+"B. Has wife been sterilized — Yes/No":"B. क्या पत्नी की नसबंदी हुई है — हाँ/नहीं",
+"C. Practice of contraception — Yes/No":"C. क्या गर्भनिरोधक का उपयोग करते हैं — हाँ/नहीं",
+"If yes, specify the method used":"यदि हाँ, तो उपयोग की गई विधि बताएं",
+"History of morbidity in the family since last 6 months from date of visit.":"मुलाकात की तारीख से पिछले 6 महीनों में परिवार में बीमारी का इतिहास",
+"Complaints":"शिकायत / बीमारी","Name of Patient":"मरीज का नाम",
+"1st Date of Visit & Signature of any Adult Family Member":"पहली मुलाकात की तारीख और परिवार के किसी वयस्क सदस्य के हस्ताक्षर",
+"2nd Date of Visit & Signature of any Adult Family Member":"दूसरी मुलाकात की तारीख और परिवार के किसी वयस्क सदस्य के हस्ताक्षर",
+"3rd Date of Visit & Signature of any Adult Family Member":"तीसरी मुलाकात की तारीख और परिवार के किसी वयस्क सदस्य के हस्ताक्षर",
+"4th Date of Visit & Signature of any Adult Family Member":"चौथी मुलाकात की तारीख और परिवार के किसी वयस्क सदस्य के हस्ताक्षर",
+"Chicken pox":"चेचक","Measles":"खसरा","Mumps":"गलसुआ","Cough with expectoration":"बलगम वाली खाँसी","Tuberculosis":"तपेदिक / टी.बी.",
+"Malaria":"मलेरिया","Fever with chill's":"ठंड लगकर बुखार","Diarrhea":"दस्त","Dysentry":"पेचिश",
+"Worms infestation [Name the worm]":"पेट में कीड़े [कीड़े का नाम]","Scabies":"खुजली / स्केबीज़","Ringworm":"दाद",
+"Louse infestation":"जूँ का संक्रमण","Breathlessness":"साँस लेने में तकलीफ","Joint pains":"जोड़ों में दर्द",
+"Leptospirosis":"लेप्टोस्पायरोसिस","Swine flu":"स्वाइन फ्लू","Chickengunya":"चिकनगुनिया","Hepatitis B":"हेपेटाइटिस बी",
+"Hepatitis A":"हेपेटाइटिस ए","Heart Problems - Specify":"हृदय संबंधी समस्या - बताएं","Kidney problems - Specify":"गुर्दे की समस्या - बताएं",
+"Hypertension":"उच्च रक्तचाप","Diabetes":"मधुमेह","Cancer":"कैंसर","Any other major disease. (Specify)":"कोई अन्य गंभीर बीमारी (बताएं)",
+"Any other information":"अन्य जानकारी","History of mortality in the family":"परिवार में मृत्यु का इतिहास",
+"Has any member of the family died during last five years — Yes/No":"क्या पिछले पाँच वर्षों में परिवार के किसी सदस्य की मृत्यु हुई है — हाँ/नहीं",
+"If Yes, enter details of each deceased family member.":"यदि हाँ, तो प्रत्येक मृतक सदस्य का विवरण भरें।",
+"Deceased person":"मृतक व्यक्ति","Name of deceased":"मृतक का नाम","Relationship with family head":"परिवार के मुखिया से संबंध",
+"Remove this record":"यह विवरण हटाएँ","Add another death":"एक और मृत्यु का विवरण जोड़ें",
+"Bill type":"बिल का प्रकार","Attach bill photo / image (you can choose a photo or open camera)":"बिल की फोटो / इमेज जोड़ें (फोटो चुनें या कैमरा खोलें)",
+"On a phone, the camera option may appear in the file picker. You can also choose an existing image. Photos are saved on this device with this survey.":"मोबाइल पर फाइल चुनते समय कैमरा विकल्प दिख सकता है। पहले से मौजूद फोटो भी चुन सकते हैं। फोटो इसी डिवाइस में सर्वे के साथ सेव होंगे।",
+"Has any member of the family died during last five years — Yes/No":"क्या पिछले पाँच वर्षों में परिवार के किसी सदस्य की मृत्यु हुई है — हाँ/नहीं",
+"A. Date of death":"A. मृत्यु की तारीख","B. Relationship of deceased with family Head":"B. मृतक का परिवार के मुखिया से संबंध",
+"C. Age at the time of death":"C. मृत्यु के समय आयु","D. Probable cause of death":"D. मृत्यु का संभावित कारण",
+"Xerox copy of current or last month’s bill attached":"वर्तमान या पिछले महीने के बिल की फोटोकॉपी संलग्न",
+"Electric bill / Rent bill / Mobile bill / Telephone bill or other:":"बिजली बिल / किराया बिल / मोबाइल बिल / टेलीफोन बिल या अन्य:",
+"Bill attached — tick any one of above bill":"बिल संलग्न — ऊपर दिए गए किसी एक बिल पर टिक करें","If other, specify":"यदि अन्य, तो बताएं",
+"Save and export":"सेव करें और एक्सपोर्ट करें","Save on this device":"इस डिवाइस में सेव करें",
+"Export filled form (JSON)":"भरा हुआ फॉर्म एक्सपोर्ट करें (JSON)","Print / Save as PDF":"प्रिंट / PDF के रूप में सेव करें",
+"Clear this form":"यह फॉर्म साफ़ करें","This form saves on this device/browser only. It does not send data to a server. Survey details may include sensitive family and health information: protect your phone and exported files.":"यह फॉर्म केवल इसी डिवाइस / ब्राउज़र में सेव होता है। डेटा सर्वर पर नहीं भेजा जाता। सर्वे में परिवार और स्वास्थ्य की संवेदनशील जानकारी हो सकती है; अपने फोन और एक्सपोर्ट की गई फाइलों को सुरक्षित रखें।",
+"Form Language / फॉर्म भाषा / ફોર્મ ભાષા":"फॉर्म की भाषा चुनें","Yes":"हाँ","No":"नहीं","Home / Hospital":"घर / अस्पताल","Choose entry type":"प्रविष्टि का प्रकार चुनें","Month":"महीना","Yes / No":"हाँ / नहीं",
+"Electric bill":"बिजली बिल","Rent bill":"किराया बिल","Mobile bill":"मोबाइल बिल","Telephone bill":"टेलीफोन बिल","Other":"अन्य"
+},
+gu: {
+"Family Information":"કુટુંબની માહિતી","Family No.":"કુટુંબ નંબર","Date":"તારીખ","Name of Interviewer":"મુલાકાત લેનારનું નામ",
+"Full Name of the Head of Family":"કુટુંબના વડાનું પૂરું નામ","Complete Postal Address":"સંપૂર્ણ ટપાલ સરનામું",
+"Duration to Stay in the Area":"આ વિસ્તારમાં રહેવાનો સમયગાળો","Mobile No. of Any Family Member":"કુટુંબના કોઈ સભ્યનો મોબાઇલ નંબર",
+"Family Date":"કુટુંબની તારીખ","Religion":"ધર્મ","Family Details":"કુટુંબની વિગતો","Sr. No.":"ક્રમ નંબર","Name":"નામ",
+"Head / Relationship":"વડા / સંબંધ","Age":"ઉંમર","Sex":"લિંગ","Marital Status":"વૈવાહિક સ્થિતિ",
+"Education (No. of Yrs.)":"શિક્ષણ (વર્ષોની સંખ્યા)","Occupation Nature":"વ્યવસાયનો પ્રકાર","Monthly Income (Rs.)":"માસિક આવક (રૂ.)",
+"Immunization status of Child / Children under 6 Years of Age":"6 વર્ષથી ઓછી ઉંમરના બાળક / બાળકોની રસીકરણ સ્થિતિ",
+"Add child":"બાળક ઉમેરો","Child":"બાળક","1. Name of child":"1. બાળકનું નામ","2. Age in Years & Months":"2. ઉંમર (વર્ષ અને મહિના)",
+"3. Delivery - At Home / Write Name of Hospital [or Tick]":"3. પ્રસૂતિ - ઘરે / હોસ્પિટલનું નામ લખો [અથવા ટિક કરો]",
+"4. Birth Weight [If Known]":"4. જન્મ સમયે વજન [જાણીતું હોય તો]",
+"5. Vaccine data - If vaccination card is available, then mention the dates, otherwise ask the family / mother and write approximate month or write - Yes / No.":"5. રસીની માહિતી - રસીકરણ કાર્ડ હોય તો તારીખ લખો; ન હોય તો પરિવાર / માતાને પૂછી અંદાજિત મહિનો અથવા હા / ના લખો.",
+"B.C.G. Vaccine":"બી.સી.જી. રસી","O.P.V. (Zero Dose)":"ઓ.પી.વી. (શૂન્ય ડોઝ)",
+"Hepatitis - B Vaccine - (Zero Dose)":"હેપેટાઇટિસ-બી રસી (શૂન્ય ડોઝ)",
+"DPT / OPV / Hepatitis B - 1st Dose":"ડી.પી.ટી. / ઓ.પી.વી. / હેપેટાઇટિસ-બી - પ્રથમ ડોઝ",
+"DPT / OPV / Hepatitis B - 2nd Dose":"ડી.પી.ટી. / ઓ.પી.વી. / હેપેટાઇટિસ-બી - બીજો ડોઝ",
+"DPT / OPV / Hepatitis B - 3rd Dose":"ડી.પી.ટી. / ઓ.પી.વી. / હેપેટાઇટિસ-બી - ત્રીજો ડોઝ",
+"Measles Vaccine / M.M.R. Vaccine":"ઓરીની રસી / એમ.એમ.આર. રસી","H/O, Measles Disease":"ઓરીનો રોગ થયો હોવાનો ઇતિહાસ",
+"1st Booster of DPT / OPV":"ડી.પી.ટી. / ઓ.પી.વી.નો પ્રથમ બૂસ્ટર","2nd Booster of DPT / OPV":"ડી.પી.ટી. / ઓ.પી.વી.નો બીજો બૂસ્ટર",
+"Total Number of Vitamin ‘A’ Doses given since Birth":"જન્મથી અત્યાર સુધી વિટામિન ‘A’ના કુલ ડોઝ",
+"Total Number of OPV given in PPI since Birth":"જન્મથી PPIમાં અપાયેલા OPVના કુલ ડોઝ",
+"Any other Vaccine given [Specify the Name of Vaccine]":"અન્ય કોઈ રસી આપી હોય [રસીનું નામ લખો]",
+"History of present pregnancy":"હાલની ગર્ભાવસ્થાનો ઇતિહાસ",
+"A. Duration of pregnancy at the time of interview (wks.)":"A. મુલાકાત સમયે ગર્ભાવસ્થાનો સમયગાળો (અઠવાડિયા)",
+"B. Registered at Antenatal Clinic: Yes/No":"B. પ્રસૂતિ પૂર્વ ક્લિનિકમાં નોંધણી: હા/ના",
+"If yes specify the place":"હા હોય તો સ્થળ જણાવો","C. H/o. Antenatal Injection T.T. Given":"C. પ્રસૂતિ પૂર્વ T.T. ઇન્જેક્શનનો ઇતિહાસ",
+"1st Dose T.T. on — Date":"T.T.ના પ્રથમ ડોઝની તારીખ","2nd Dose T.T. on — Date":"T.T.ના બીજા ડોઝની તારીખ",
+"OR — Booster T.T. on — Date":"અથવા — T.T. બૂસ્ટરની તારીખ","Family Planning History":"કુટુંબ નિયોજનનો ઇતિહાસ",
+"A. Has husband been sterilized — Yes/No":"A. શું પતિની નસબંધી થઈ છે — હા/ના",
+"B. Has wife been sterilized — Yes/No":"B. શું પત્નીની નસબંધી થઈ છે — હા/ના",
+"C. Practice of contraception — Yes/No":"C. શું ગર્ભનિરોધક પદ્ધતિનો ઉપયોગ કરો છો — હા/ના",
+"If yes, specify the method used":"હા હોય તો વપરાયેલી પદ્ધતિ જણાવો",
+"History of morbidity in the family since last 6 months from date of visit.":"મુલાકાતની તારીખથી છેલ્લા 6 મહિનામાં કુટુંબમાં બીમારીનો ઇતિહાસ",
+"Complaints":"ફરિયાદ / બીમારી","Name of Patient":"દર્દીનું નામ",
+"1st Date of Visit & Signature of any Adult Family Member":"પ્રથમ મુલાકાતની તારીખ અને કુટુંબના કોઈ પુખ્ત સભ્યની સહી",
+"2nd Date of Visit & Signature of any Adult Family Member":"બીજી મુલાકાતની તારીખ અને કુટુંબના કોઈ પુખ્ત સભ્યની સહી",
+"3rd Date of Visit & Signature of any Adult Family Member":"ત્રીજી મુલાકાતની તારીખ અને કુટુંબના કોઈ પુખ્ત સભ્યની સહી",
+"4th Date of Visit & Signature of any Adult Family Member":"ચોથી મુલાકાતની તારીખ અને કુટુંબના કોઈ પુખ્ત સભ્યની સહી",
+"Chicken pox":"અછબડા","Measles":"ઓરી","Mumps":"ગાલપચોળિયાં","Cough with expectoration":"કફ સાથેની ઉધરસ","Tuberculosis":"ક્ષયરોગ / ટી.બી.",
+"Malaria":"મેલેરિયા","Fever with chill's":"ધ્રુજારી સાથે તાવ","Diarrhea":"ઝાડા","Dysentry":"મરડો",
+"Worms infestation [Name the worm]":"પેટમાં કૃમિ [કૃમિનું નામ]","Scabies":"ખંજવાળ / સ્કેબીઝ","Ringworm":"દાદ",
+"Louse infestation":"જૂનો ચેપ","Breathlessness":"શ્વાસ લેવામાં તકલીફ","Joint pains":"સાંધાનો દુખાવો",
+"Leptospirosis":"લેપ્ટોસ્પાઇરોસિસ","Swine flu":"સ્વાઇન ફ્લૂ","Chickengunya":"ચિકનગુનિયા","Hepatitis B":"હેપેટાઇટિસ બી",
+"Hepatitis A":"હેપેટાઇટિસ એ","Heart Problems - Specify":"હૃદયની તકલીફ - જણાવો","Kidney problems - Specify":"કિડનીની તકલીફ - જણાવો",
+"Hypertension":"હાઈ બ્લડ પ્રેશર","Diabetes":"ડાયાબિટીસ","Cancer":"કેન્સર","Any other major disease. (Specify)":"અન્ય કોઈ ગંભીર રોગ (જણાવો)",
+"Any other information":"અન્ય માહિતી","History of mortality in the family":"કુટુંબમાં મૃત્યુનો ઇતિહાસ",
+"Has any member of the family died during last five years — Yes/No":"શું છેલ્લા પાંચ વર્ષમાં કુટુંબના કોઈ સભ્યનું મૃત્યુ થયું છે — હા/ના",
+"A. Date of death":"A. મૃત્યુની તારીખ","B. Relationship of deceased with family Head":"B. મૃતકનો કુટુંબના વડા સાથેનો સંબંધ",
+"C. Age at the time of death":"C. મૃત્યુ સમયે ઉંમર","D. Probable cause of death":"D. મૃત્યુનું સંભવિત કારણ",
+"Xerox copy of current or last month’s bill attached":"ચાલુ અથવા ગયા મહિનાના બિલની ઝેરોક્સ નકલ જોડેલી",
+"Electric bill / Rent bill / Mobile bill / Telephone bill or other:":"વીજળી બિલ / ભાડા બિલ / મોબાઇલ બિલ / ટેલિફોન બિલ અથવા અન્ય:",
+"Bill attached — tick any one of above bill":"બિલ જોડ્યું છે — ઉપરના કોઈ એક બિલ પર ટિક કરો","If other, specify":"અન્ય હોય તો જણાવો",
+"Save and export":"સેવ કરો અને એક્સપોર્ટ કરો","Save on this device":"આ ડિવાઇસમાં સેવ કરો",
+"Export filled form (JSON)":"ભરેલું ફોર્મ એક્સપોર્ટ કરો (JSON)","Print / Save as PDF":"પ્રિન્ટ / PDF તરીકે સેવ કરો",
+"Clear this form":"આ ફોર્મ સાફ કરો","Form Language / फॉर्म भाषा / ફોર્મ ભાષા":"ફોર્મની ભાષા પસંદ કરો",
+"Yes":"હા","No":"ના","Choose entry type":"પ્રવેશનો પ્રકાર પસંદ કરો","Month":"મહિનો","Yes / No":"હા / ના","Electric bill":"વીજળી બિલ","Rent bill":"ભાડા બિલ","Mobile bill":"મોબાઇલ બિલ","Telephone bill":"ટેલિફોન બિલ","Other":"અન્ય"
+}
+};
+function applyLanguage(lang){
+  const dict=translations[lang]||{};
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  let node;
+  while(node=walker.nextNode()){
+    const raw=node.nodeValue, trimmed=raw.trim();
+    if(dict[trimmed]) node.nodeValue=raw.replace(trimmed,dict[trimmed]);
+  }
+  document.documentElement.lang=lang;
+  localStorage.setItem('sanitary_survey_language',lang);
+}
+const langSelect=document.getElementById('languageSelect');
+langSelect.addEventListener('change',()=>{localStorage.setItem('sanitary_survey_language',langSelect.value);location.reload();});
+const rememberedLang=localStorage.getItem('sanitary_survey_language')||'en';
+langSelect.value=rememberedLang;
+if(rememberedLang!=='en') applyLanguage(rememberedLang);
+</script>
+
+
+<script>
+window.addEventListener('beforeprint',()=>{
+  const family=document.querySelector('[data-save="family_no"]')?.value||'________________';
+  const date=document.querySelector('[data-save="interview_date"]')?.value||'________________';
+  const f=document.querySelector('[data-print-family]');
+  const d=document.querySelector('[data-print-date]');
+  if(f)f.textContent=family;
+  if(d)d.textContent=date;
+});
+</script>
+
+<script>
+/* V6 enhancement layer: preserves the V5 field names and stored record format. */
+(()=>{
+'use strict';
+const KEY='sanitary_survey_forms_v1';
+const $=id=>document.getElementById(id);
+const safe=(v)=>String(v??'');
+const forms=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}};
+const store=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){alert('Storage is full. Export a JSON backup, remove large photos, or free device storage.');return false}};
+const current=()=>forms().find(f=>f.id===activeFormId);
+let extraPhotos=[];
+const required=[['family_no','Family number'],['interview_date','Survey date'],['interviewer','Interviewer name'],['head_name','Family head name'],['postal_address','Postal address']];
+function completion(d){
+ const missing=required.filter(([k])=>!safe(d[k]).trim()).map(x=>x[1]);
+ return {pct:Math.round((required.length-missing.length)/required.length*100),missing,complete:!missing.length};
+}
+function stat(label,value){return `<div class="v6-stat"><b>${value}</b><span>${label}</span></div>`}
+// Dashboard counts only submitted/shared records. Older V8 records are
+// treated as submitted when all five mandatory identity fields are complete.
+function isDashboardRecord(f){const d=f?.data||{};return !!f?.sharedAt || completion(d).complete;}
+window.v6RefreshDashboard=()=>{
+ const fs=forms().filter(isDashboardRecord), all=fs.map(f=>f.data||{}), members=all.flatMap(d=>Array.from({length:10},(_,i)=>d[`family_${i+1}_0`]?{name:d[`family_${i+1}_0`],sex:d[`family_${i+1}_3`]}:null).filter(Boolean));
+ const male=members.filter(m=>/^m(ale)?$/i.test(m.sex)).length, female=members.filter(m=>/^f(emale)?$/i.test(m.sex)).length;
+ const children=all.reduce((n,d)=>n+(d.child_records||[]).filter(c=>c.name||c.age).length,0);
+ const deaths=all.reduce((n,d)=>n+(d.death_records||[]).length,0);
+ const done=all.filter(d=>completion(d).complete).length;
+ $('v6Stats').innerHTML=[stat('Families surveyed',fs.length),stat('Family members',members.length),stat('Male',male),stat('Female',female),stat('Children under 6',children),stat('Mortality records',deaths),stat('Completed forms',done),stat('Incomplete forms',fs.length-done)].join('');
+ window.v6RenderResults();
+};
+window.v6RenderResults=()=>{
+ const q=safe($('v6Search').value).trim().toLowerCase(), filter=$('v6CompletionFilter').value;
+ const list=forms().filter(isDashboardRecord).sort((a,b)=>(b.updated||0)-(a.updated||0)).filter(f=>{
+  const d=f.data||{}, c=completion(d);
+  const matches=!q||[d.family_no,d.head_name,d.family_mobile].some(x=>safe(x).toLowerCase().includes(q));
+  return matches&&(filter==='all'||(filter==='complete'?c.complete:!c.complete));
+ });
+ $('v6Results').innerHTML=list.length?list.map(f=>{
+  const d=f.data||{},c=completion(d),name=safe(d.head_name)||'Unnamed family';
+  return `<div class="v6-result"><div><strong>${name}</strong><p>Family No: ${safe(d.family_no)||'—'} · Mobile: ${safe(d.family_mobile)||'—'} · ${c.pct}% complete</p><span class="v6-badge ${c.complete?'':'incomplete'}">${c.complete?'Completed':'Incomplete'}</span></div><div class="actions"><button type="button" onclick="v7OpenSavedForm('${safe(f.id).replace(/'/g,'')}')">Continue Editing</button></div></div>`;
+ }).join(''):'<p class="note">No matching saved forms.</p>';
+};
+function updateValidation(){
+ const d=window.allData?window.allData():{}, c=completion(d), box=$('v6Validation');
+ if(!$('surveyContent')||$('surveyContent').hidden){box.hidden=true;return}
+ box.hidden=false;$('v6ProgressText').textContent=`${c.pct}% complete`;
+ $('v6ProgressBar').style.width=c.pct+'%';
+ $('v6Missing').innerHTML=c.missing.length?'<strong>Missing required fields:</strong><ul>'+c.missing.map(x=>`<li>${x}</li>`).join('')+'</ul>':'<strong>Required fields completed.</strong>';
+ const no=d.family_no;
+ if(no){const duplicate=forms().filter(f=>f.id!==activeFormId&&safe(f.data?.family_no).trim()===safe(no).trim());if(duplicate.length)$('v6Missing').innerHTML+=`<p style="color:#9b4d00"><strong>Warning:</strong> Family number ${no} is already used by another saved form.</p>`;}
+}
+const originalSave=window.saveNow;
+window.saveNow=function(){
+ if(!activeFormId)return;
+ const data=window.allData(), fs=forms(), idx=fs.findIndex(f=>f.id===activeFormId);
+ data.v6_photo_attachments=extraPhotos;
+ const item={id:activeFormId,data,updated:Date.now(),...(idx>=0&&fs[idx].sharedAt?{sharedAt:fs[idx].sharedAt}:{})};
+ if(idx>=0)fs[idx]=item;else fs.push(item);
+ if(store(fs)){const status=$('status');if(status)status.textContent='Auto-saved on this device.';window.v6RefreshDashboard();}
+ updateValidation();
+};
+const originalRestore=window.restoreFormData;
+const originalReset=window.resetSurveyUI;
+window.restoreFormData=function(d){originalRestore(d);extraPhotos=Array.isArray(d.v6_photo_attachments)?d.v6_photo_attachments:[];renderExtraPhotos();updateValidation();};
+window.resetSurveyUI=function(){originalReset();extraPhotos=[];renderExtraPhotos();updateValidation();};
+window.v6DuplicateCurrent=()=>{
+ const f=current();if(!f){alert('Open a saved form first.');return}
+ const copy=JSON.parse(JSON.stringify(f));copy.id='form_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);copy.updated=Date.now();
+ copy.data.family_no='';copy.data.head_name=(copy.data.head_name||'')+' (Copy)';
+ const fs=forms();fs.push(copy);if(store(fs)){window.openForm(copy.id);alert('A duplicate was created. Assign it a new family number.');}
+};
+function csvCell(v){let s=safe(v);if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+function download(name,content,type){const blob=new Blob(['\ufeff'+content],{type:type+';charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function csv(rows){if(!rows.length)return 'No records';const keys=[...new Set(rows.flatMap(o=>Object.keys(o)))];return [keys.map(csvCell).join(','),...rows.map(o=>keys.map(k=>csvCell(o[k])).join(','))].join('\r\n')}
+window.v6ExportCSVs=()=>{
+ const fs=forms();if(!fs.length){alert('No saved family records to export.');return}
+ const rows={Family_Details:[],Family_Members:[],Immunization:[],Pregnancy:[],Family_Planning:[],Morbidity:[],Mortality:[]};
+ fs.forEach(f=>{const d=f.data||{},base={family_number:d.family_no||'',survey_date:d.interview_date||'',family_head:d.head_name||''};
+ rows.Family_Details.push({...base,interviewer:d.interviewer,address:d.postal_address,duration_stay:d.duration_stay,mobile:d.family_mobile,religion:d.religion});
+ for(let i=1;i<=10;i++){const v=j=>d[`family_${i}_${j}`]||'';if(Array.from({length:8},(_,j)=>v(j)).some(Boolean))rows.Family_Members.push({...base,sr_no:i,name:v(0),relationship:v(1),age:v(2),sex:v(3),marital_status:v(4),education_years:v(5),occupation:v(6),monthly_income:v(7)});}
+ (d.child_records||[]).forEach((c,i)=>Object.entries(c.vaccines||{}).forEach(([k,v])=>rows.Immunization.push({...base,child_no:i+1,child_name:c.name||'',child_age:c.age||'',vaccine_field:k,entry_type:v?.type||'',value:v?.value||''})));
+ rows.Pregnancy.push({...base,pregnancy_duration_weeks:d.preg_duration,antenatal_registered:d.antenatal_registered,antenatal_place:d.antenatal_place,tt1_date:d.tt1_date,tt2_date:d.tt2_date,tt_booster_date:d.tt_booster_date});
+ rows.Family_Planning.push({...base,husband_sterilized:d.husband_sterilized,wife_sterilized:d.wife_sterilized,contraception_practice:d.contraception_practice,contraception_method:d.contraception_method});
+ Object.keys(d).filter(k=>/^morb_\d+_patient$/.test(k)).forEach(k=>{const i=k.match(/\d+/)[0];const vals=[d[k],1,2,3,4].map((x,n)=>n?d[`morb_${i}_visit${n}`]:x);if(vals.some(Boolean))rows.Morbidity.push({...base,complaint_index:Number(i)+1,patient_name:vals[0],visit1:vals[1],visit2:vals[2],visit3:vals[3],visit4:vals[4]})});
+ (d.death_records||[]).forEach(x=>rows.Mortality.push({...base,...x}));
+ });
+ Object.entries(rows).forEach(([name,data])=>download(name+'.csv',csv(data),'text/csv'));
+};
+window.v6Backup=()=>{window.saveNow();const payload={format:'SanitaryInspectorFieldSurvey',version:8,exported_at:new Date().toISOString(),forms:forms()};download('sanitary-inspector-v6-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(payload,null,2),'application/json')};
+$('v6RestoreFile').addEventListener('change',async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  const parsed=JSON.parse(await file.text()), incoming=Array.isArray(parsed)?parsed:parsed.forms;
+  if(!Array.isArray(incoming))throw new Error('This JSON backup does not contain a forms array.');
+  if(!confirm(`Merge ${incoming.length} record(s) into this device? Existing records will not be overwritten.`))return;
+  const existing=forms(), ids=new Set(existing.map(f=>f.id)), merged=existing.slice();let added=0,skipped=0;
+  incoming.forEach((f,i)=>{let item=JSON.parse(JSON.stringify(f));if(!item||!item.data){skipped++;return}
+    if(!item.id||ids.has(item.id))item.id='restored_'+Date.now()+'_'+i+'_'+Math.random().toString(36).slice(2,6);
+    ids.add(item.id);item.updated=item.updated||Date.now();merged.push(item);added++;
+  });
+  if(store(merged)){alert(`Restore complete. Added ${added} record(s); skipped ${skipped}. Existing records were kept.`);window.v6RefreshDashboard();}
+ }catch(err){alert('Could not restore backup: '+err.message)}finally{e.target.value=''}
+});
+async function compressImage(file){
+ const src=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)});
+ const img=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=src});
+ const scale=Math.min(1,1600/Math.max(img.width,img.height)), canvas=document.createElement('canvas');canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);
+ canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+ return new Promise(res=>canvas.toBlob(blob=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(blob)},'image/jpeg',.72));
+}
+function renderExtraPhotos(){
+ const host=$('v6ExtraPhotoPreview');if(!host)return;host.innerHTML='';
+ extraPhotos.forEach((p,i)=>{const div=document.createElement('div');div.className='photo-item';const img=document.createElement('img');img.src=p.data;img.alt=p.name||'Survey photograph';const cap=document.createElement('div');cap.textContent=p.name||`Photo ${i+1}`;const btn=document.createElement('button');btn.type='button';btn.className='danger';btn.textContent='Remove';btn.onclick=()=>{extraPhotos.splice(i,1);renderExtraPhotos();window.saveNow()};div.append(img,cap,btn);host.append(div)});
+}
+function renderExtraPhotos(){const host=$('v6ExtraPhotoPreview');if(!host)return;host.innerHTML='';extraPhotos.forEach((p,i)=>{const div=document.createElement('div');div.className='photo-item';const img=document.createElement('img');img.src=p.data;img.alt=p.name||'Survey photograph';const cap=document.createElement('div');cap.textContent=p.name||`Photo ${i+1}`;const btn=document.createElement('button');btn.type='button';btn.className='danger';btn.textContent='Remove';btn.onclick=()=>{extraPhotos.splice(i,1);renderExtraPhotos();window.saveNow()};div.append(img,cap,btn);host.append(div)})}
+$('billPhotos').addEventListener('change',async e=>{
+ e.stopImmediatePropagation();
+ for(const file of [...e.target.files]){if(!file.type.startsWith('image/'))continue;try{billImages.push({name:file.name,data:await compressImage(file)})}catch(err){alert('Could not compress '+file.name)}}
+ renderBillPhotos();window.saveNow();e.target.value='';
+},true);
+$('v6ExtraPhotoInput').addEventListener('change',async e=>{
+ for(const file of [...e.target.files]){if(!file.type.startsWith('image/'))continue;try{extraPhotos.push({name:file.name,data:await compressImage(file)})}catch(err){alert('Could not process '+file.name)}}
+ renderExtraPhotos();window.saveNow();e.target.value='';
+});
+$('v6Search').addEventListener('input',window.v6RenderResults);$('v6CompletionFilter').addEventListener('change',window.v6RenderResults);
+document.addEventListener('input',()=>setTimeout(updateValidation,50));document.addEventListener('change',()=>setTimeout(updateValidation,50));
+const origPrint=window.onbeforeprint;window.addEventListener('beforeprint',()=>{window.saveNow();});
+/* One-time compatibility migration for V5's single-draft key when no form list exists. */
+if(!forms().length){try{const draft=JSON.parse(localStorage.getItem('sanitary_survey_draft')||'null');if(draft&&Object.keys(draft).length){store([{id:'migrated_v5_'+Date.now(),data:draft,updated:Date.now()}]);}}catch(e){}}
+window.v6RefreshDashboard();
+})();
+</script>
+
+<script id="v7SecurityAndSheets">
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const PATTERN_KEY='sanitary_survey_pattern_v1', SHEET_KEY='sanitary_survey_google_script_url_v1';
+let chosen=[], drawing=false, mode='setup';
+const dots=[...document.querySelectorAll('#patternGrid [data-dot]')];
+function resetDots(){chosen=[];dots.forEach(d=>d.classList.remove('selected'));$('patternStatus').textContent='Choose a pattern.';}
+function selectDot(n){if(!drawing||chosen.includes(n))return;chosen.push(n);dots[n].classList.add('selected');}
+function pointerStart(e){e.preventDefault();drawing=true;resetDots();const el=e.target.closest('[data-dot]');if(el)selectDot(Number(el.dataset.dot));}
+function pointerMove(e){if(!drawing)return;const el=document.elementFromPoint(e.clientX,e.clientY)?.closest?.('[data-dot]');if(el)selectDot(Number(el.dataset.dot));}
+function pointerEnd(){if(!drawing)return;drawing=false;$('patternStatus').textContent=chosen.length>=4?'Pattern selected. Press Continue.':'Select at least 4 different dots.';}
+$('patternGrid').addEventListener('pointerdown',pointerStart);$('patternGrid').addEventListener('pointermove',pointerMove);window.addEventListener('pointerup',pointerEnd);
+async function digestPattern(sequence,salt){if(!crypto?.subtle)throw new Error('Secure pattern encryption is not supported in this browser. Open this file in a modern Chrome browser.');const enc=new TextEncoder();const key=await crypto.subtle.importKey('raw',enc.encode(sequence),'PBKDF2',false,['deriveBits']);const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(salt),iterations:120000,hash:'SHA-256'},key,256);return [...new Uint8Array(bits)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function randomSalt(){const a=new Uint8Array(16);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(2,'0')).join('');}
+window.v7OpenRecords=()=>{mode=localStorage.getItem(PATTERN_KEY)?'unlock':'setup';resetDots();$('patternTitle').textContent=mode==='setup'?'Set your pattern lock':'Unlock survey records';$('patternHelp').textContent=mode==='setup'?'Connect at least 4 dots. This is a one-time setup; the pattern cannot be changed from this screen.':'Draw your saved pattern to open the Records dashboard.';$('patternModal').hidden=false;};
+window.v7ClosePattern=()=>{$('patternModal').hidden=true;resetDots();};
+$('patternSubmit').addEventListener('click',async()=>{if(chosen.length<4){$('patternStatus').textContent='Please connect at least 4 dots.';return;}const sequence=chosen.join('-');try{if(mode==='setup'){if(localStorage.getItem(PATTERN_KEY)){mode='unlock';$('patternStatus').textContent='A pattern is already set. Draw it to unlock.';resetDots();return;}const salt=randomSalt(),hash=await digestPattern(sequence,salt);localStorage.setItem(PATTERN_KEY,JSON.stringify({salt,hash,created:Date.now()}));$('patternStatus').textContent='Pattern saved. Records unlocked.';}else{const saved=JSON.parse(localStorage.getItem(PATTERN_KEY)||'null');const hash=await digestPattern(sequence,saved.salt);if(hash!==saved.hash){$('patternStatus').textContent='Incorrect pattern. Try again.';resetDots();return;}$('patternStatus').textContent='Unlocked.';}$('patternModal').hidden=true;$('recordsModal').hidden=false;window.v6RefreshDashboard();$('v7SheetUrl').value=localStorage.getItem(SHEET_KEY)||''; }catch(e){$('patternStatus').textContent=e.message;}});
+window.v7CloseRecords=()=>{$('recordsModal').hidden=true;};
+window.v7OpenSavedForm=id=>{window.v7CloseRecords();window.openForm(id);};
+window.v7SaveSheetUrl=()=>{const u=$('v7SheetUrl').value.trim();if(u&&!/^https:\/\/script\.google\.com\/macros\/s\//.test(u)){alert('Paste the deployed Google Apps Script Web App URL (https://script.google.com/macros/s/...).');return;}localStorage.setItem(SHEET_KEY,u);$('v7SheetStatus').textContent=u?'Google Sheets connection URL saved on this device.':'Google Sheets connection cleared.';};
+async function postRecords(records){const url=localStorage.getItem(SHEET_KEY);if(!url)throw new Error('First paste and save your deployed Apps Script Web App URL.');const payload={action:'upsert',records:records.map(f=>{const d=f.data||{},sp=d._student_profile||{};return {id:f.id,updated:f.updated||Date.now(),student_id:sp.student_id||localStorage.getItem('sanitary_survey_active_student_id')||'',student_name:sp.name||(sp.student_id==='007'?'Jay':sp.student_id==='008'?'Stavan':''),family_no:d.family_no||'',head_name:d.head_name||'',mobile:d.family_mobile||'',survey_date:d.interview_date||'',data:d};})};
+ // no-cors prevents browser CORS preflight; the Apps Script receives URL-encoded POST body.
+ await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'payload='+encodeURIComponent(JSON.stringify(payload))});
+ return true;
+}
+window.v7SyncAll=async()=>{const fs=JSON.parse(localStorage.getItem('sanitary_survey_forms_v1')||'[]');if(!fs.length){$('v7SheetStatus').textContent='No local survey records to sync.';return;}if(!confirm(`Sync ${fs.length} family record(s) to your connected Google Sheet?`))return;$('v7SheetStatus').textContent='Sending records to Google Sheets…';try{await postRecords(fs);$('v7SheetStatus').textContent='Sync request sent. Check the Survey_Records tab in your Google Sheet to confirm records arrived.';}catch(e){$('v7SheetStatus').textContent='Sync failed: '+e.message;}};
+// Save changes to the sheet in the background when a connection is configured.
+const priorSave=window.saveNow;let syncTimer=null;
+window.saveNow=function(){priorSave();if(localStorage.getItem(SHEET_KEY)){clearTimeout(syncTimer);syncTimer=setTimeout(()=>{const fs=JSON.parse(localStorage.getItem('sanitary_survey_forms_v1')||'[]');postRecords(fs).catch(e=>{const st=$('status');if(st)st.textContent='Saved locally; Google Sheets sync issue: '+e.message;});},1800);}};
+// Never expose the dashboard at page load; it is only reachable through the Record button and pattern gate.
+$('recordsModal').hidden=true;$('patternModal').hidden=true;
+})();
+</script>
+
+<script id="v8Enhancements">
+(()=>{'use strict';const $=id=>document.getElementById(id);
+const REC='sanitary_survey_recovery_v1', WA='sanitary_survey_whatsapp_v1', TRASH='sanitary_survey_trash_v1', FAIL='sanitary_survey_lock_fail_v1';
+function randCode(){const a=new Uint32Array(2);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).toUpperCase().padStart(8,'0')).join('-');}
+async function hashText(v,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(v),'PBKDF2',false,['deriveBits']);const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode(salt),iterations:150000,hash:'SHA-256'},k,256);return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+const oldSubmit=$('patternSubmit');
+oldSubmit.addEventListener('click',async()=>{if($('patternModal').hidden)return;const state=localStorage.getItem('sanitary_survey_pattern_v1');if(!state){setTimeout(async()=>{try{if(!localStorage.getItem('sanitary_survey_pattern_v1'))return;$('patternModal').hidden=false;$('recordsModal').hidden=true;let r=localStorage.getItem(REC);if(!r){const code=randCode(),salt=randCode();const h=await hashText(code,salt);localStorage.setItem(REC,JSON.stringify({salt,hash:h,created:Date.now()}));$('v8RecoveryCode').textContent=code;$('v8RecoveryBox').hidden=false;$('patternStatus').textContent='Pattern set. Save your one-time recovery code, then confirm below.';const b=oldSubmit.cloneNode(true);oldSubmit.replaceWith(b);b.textContent='I saved the recovery code';b.onclick=()=>{if(!$('v8RecoverySaved').checked){$('patternStatus').textContent='Please confirm you saved the recovery code.';return;}$('patternModal').hidden=true;$('recordsModal').hidden=false;window.v6RefreshDashboard();$('v7SheetUrl').value=localStorage.getItem('sanitary_survey_google_script_url_v1')||'';};} }catch(e){$('patternStatus').textContent='Could not create recovery code: '+e.message;}},250);return;}
+},true);
+// Rate-limit failed pattern attempts. Original handler still performs hash verification.
+const statusObserver=new MutationObserver(()=>{const t=$('patternStatus').textContent;if(/Incorrect pattern/i.test(t)){let f=Number(localStorage.getItem(FAIL)||0)+1;localStorage.setItem(FAIL,String(f));if(f>=5){localStorage.setItem(FAIL,'0');localStorage.setItem(FAIL+'_until',String(Date.now()+60000));$('patternStatus').textContent='Too many attempts. Try again in 60 seconds.';}}});statusObserver.observe($('patternStatus'),{childList:true,subtree:true,characterData:true});
+window.v8RecoverRecords=async()=>{try{const until=Number(localStorage.getItem(FAIL+'_until')||0);if(Date.now()<until){$('patternStatus').textContent='Please wait before trying again.';return;}const code=$('v8RecoveryInput').value.trim().toUpperCase(),r=JSON.parse(localStorage.getItem(REC)||'null');if(!r||!code){$('patternStatus').textContent='Recovery code is not available or was not entered.';return;}const h=await hashText(code,r.salt);if(h!==r.hash){$('patternStatus').textContent='Incorrect recovery code.';return;}localStorage.setItem(FAIL,'0');$('patternModal').hidden=true;$('recordsModal').hidden=false;window.v6RefreshDashboard();$('v7SheetUrl').value=localStorage.getItem('sanitary_survey_google_script_url_v1')||'';}catch(e){$('patternStatus').textContent=e.message;}};
+// Persist recipient number locally; WhatsApp opens with the selected destination.
+const savedWA=JSON.parse(localStorage.getItem(WA)||'{}');if(savedWA.number)$('v8WhatsAppNumber').value=savedWA.number;if(savedWA.country)$('v8Country').value=savedWA.country;
+window.v8SaveWhatsApp=()=>{const n=$('v8WhatsAppNumber').value.replace(/\D/g,'');if(n.length<7||n.length>15){$('v8WhatsAppStatus').textContent='Enter a valid WhatsApp number.';return;}localStorage.setItem(WA,JSON.stringify({number:n,country:$('v8Country').value}));$('v8WhatsAppStatus').textContent='WhatsApp number saved on this device.';};
+window.v8GenerateReport=()=>{window.saveNow();const d=window.allData();if(!d||!d.family_no){if(!confirm('Family number is blank. Generate this report anyway?'))return;}window.print();};
+window.v8OpenWhatsApp=()=>{const n=$('v8WhatsAppNumber').value.replace(/\D/g,'');if(n.length<7||n.length>15){$('v8WhatsAppStatus').textContent='Enter a valid WhatsApp number first.';return;}window.v8SaveWhatsApp();const d=window.allData();if(!completion(d).complete){$('v8WhatsAppStatus').textContent='Complete the five required family details before sharing.';return;}const fs=forms(),idx=fs.findIndex(f=>f.id===activeFormId);if(idx>=0){fs[idx].sharedAt=Date.now();fs[idx].updated=Date.now();store(fs);window.v6RefreshDashboard();}const msg=`Sanitary Inspector Family Survey Report\nFamily No: ${d.family_no||'-'}\nFamily Head: ${d.head_name||'-'}\nSurvey Date: ${d.interview_date||'-'}\nPlease find the PDF report attached.`;window.open('https://wa.me/'+$('v8Country').value+n+'?text='+encodeURIComponent(msg),'_blank','noopener');$('v8WhatsAppStatus').textContent='WhatsApp opened. Attach the PDF you saved, then press Send. This form is now counted in the dashboard.';};
+// Undo window for accidental deletes: intercept the existing delete action and archive record.
+const oldDelete=window.deleteCurrentForm;if(typeof oldDelete==='function'){window.deleteCurrentForm=function(){const id=activeFormId;const all=JSON.parse(localStorage.getItem('sanitary_survey_forms_v1')||'[]');const rec=all.find(x=>x.id===id);if(!rec)return;if(!confirm('Move this family record to Recently Deleted? It can be restored for 30 days.'))return;const trash=JSON.parse(localStorage.getItem(TRASH)||'[]');trash.push({...rec,deletedAt:Date.now()});localStorage.setItem(TRASH,JSON.stringify(trash));localStorage.setItem('sanitary_survey_forms_v1',JSON.stringify(all.filter(x=>x.id!==id)));alert('Record moved to Recently Deleted.');location.reload();};}
+// Add restore controls to protected dashboard.
+const dash=$('v6Dashboard');if(dash){const box=document.createElement('div');box.className='card';box.innerHTML='<h3>Recently Deleted</h3><button type="button" class="secondary" id="v8RestoreDeleted">View / Restore deleted records</button><p class="note">Deleted records are retained on this device for 30 days.</p>';dash.appendChild(box);box.querySelector('button').onclick=()=>{let t=JSON.parse(localStorage.getItem(TRASH)||'[]').filter(x=>Date.now()-x.deletedAt<30*86400000);localStorage.setItem(TRASH,JSON.stringify(t));if(!t.length){alert('No deleted records available.');return;}const choices=t.map((x,i)=>`${i+1}. ${x.data?.family_no||'No family number'} — ${x.data?.head_name||'Unnamed'}`).join('\n');const ans=prompt('Enter the number to restore:\n'+choices);const i=Number(ans)-1;if(!Number.isInteger(i)||!t[i])return;const fs=JSON.parse(localStorage.getItem('sanitary_survey_forms_v1')||'[]');if(fs.some(f=>f.id===t[i].id)){alert('This record already exists.');return;}const item=t.splice(i,1)[0];delete item.deletedAt;fs.push(item);localStorage.setItem('sanitary_survey_forms_v1',JSON.stringify(fs));localStorage.setItem(TRASH,JSON.stringify(t));window.v6RefreshDashboard();alert('Record restored.');};}
+// Monthly CSV summary from saved forms.
+if(dash){const b=document.createElement('button');b.className='secondary';b.textContent='Download monthly survey summary';b.onclick=()=>{const fs=JSON.parse(localStorage.getItem('sanitary_survey_forms_v1')||'[]'),month=new Date().toISOString().slice(0,7),rows=[['Month','Family No','Family Head','Mobile','Survey Date','Last Updated'],...fs.filter(f=>isDashboardRecord(f)&&(f.data?.interview_date||'').startsWith(month)).map(f=>[month,f.data?.family_no||'',f.data?.head_name||'',f.data?.family_mobile||'',f.data?.interview_date||'',new Date(f.updated||0).toISOString()])];const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='survey-summary-'+month+'.csv';a.click();URL.revokeObjectURL(a.href);};dash.querySelector('.actions')?.appendChild(b);}
+// Offline-first: autosave remains local; retry pending Sheet sync when connection returns.
+window.addEventListener('online',()=>{if(localStorage.getItem('sanitary_survey_google_script_url_v1'))window.v7SyncAll();});
+})();
+</script>
+
+
+<script id="studentIdentityStamp">
+document.addEventListener('DOMContentLoaded',()=>{const original=window.saveNow;if(typeof original==='function'){window.saveNow=function(){const r=localStorage.getItem('sanitary_survey_student_profile_v1');try{const p=JSON.parse(r||'{}');if(p.id){localStorage.setItem('sanitary_survey_active_student_id',p.id);}}catch(e){}return original.apply(this,arguments);};}});
+</script>
+
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Offline setup unavailable:', err));
+  });
+}
+</script>
+
+</body></html>
